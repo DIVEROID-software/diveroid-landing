@@ -1,3 +1,19 @@
+<!--
+  ╔══════════════════════════════════════════════════════════╗
+  ║  DIVEROID Landing Page — index.html                     ║
+  ║  최종 업데이트: 2026-04-04                               ║
+  ║  라이브 URL: https://www.diveroid.com                    ║
+  ╠══════════════════════════════════════════════════════════╣
+  ║  수정 가이드                                             ║
+  ║  · 텍스트/번역 → assets/i18n/landing.js                 ║
+  ║  · 배경 이미지 → assets/images/bg-1~4.jpg 교체          ║
+  ║  · 이메일 수집 API → api/subscribe.js                   ║
+  ║  · 배포 → git push (Vercel 자동 배포)                   ║
+  ╠══════════════════════════════════════════════════════════╣
+  ║  PRD → docs/PRD.md                                      ║
+  ║  계획 → PLAN.md                                         ║
+  ╚══════════════════════════════════════════════════════════╝
+-->
 <!doctype html>
 <html lang="ko">
   <head>
@@ -669,11 +685,14 @@
         input.disabled = true;
 
         try {
-          const res = await fetch("/api/subscribe", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, lang: currentLang }),
-          });
+          const res = await fetch(
+            "https://diveroid-landing.vercel.app/api/subscribe",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, lang: currentLang }),
+            },
+          );
           if (res.ok) {
             btn.textContent =
               currentLang === "ko" ? "신청 완료 🙏" : "Done! 🙏";
