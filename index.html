@@ -492,6 +492,42 @@
         color: rgba(255, 255, 255, 0.8);
       }
 
+      /* ── Company / Support Footer ── */
+      .l-footer {
+        width: 100%;
+        max-width: 900px;
+        margin: 64px auto 0;
+        padding: 24px 16px 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+        font-size: 11px;
+        line-height: 1.75;
+        color: rgba(255, 255, 255, 0.5);
+      }
+      .l-footer-brand {
+        font-size: 13px;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.78);
+        margin-bottom: 10px;
+        letter-spacing: 0.02em;
+      }
+      .l-footer-row {
+        margin-top: 4px;
+      }
+      .l-footer a {
+        color: rgba(144, 224, 239, 0.85);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+      .l-footer a:hover {
+        color: #ade8f4;
+      }
+      .l-footer-copy {
+        margin-top: 12px;
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.35);
+      }
+
       /* Responsive — Mobile */
       @media (max-width: 640px) {
         nav {
@@ -548,6 +584,14 @@
         }
         .l-cs-item {
           font-size: 14px;
+        }
+        .l-footer {
+          font-size: 10px;
+          padding-top: 18px;
+          margin-top: 40px;
+        }
+        .l-footer-brand {
+          font-size: 12px;
         }
       }
     </style>
@@ -618,6 +662,15 @@
           <p class="l-sign" id="l-sign"></p>
         </div>
       </div>
+
+      <!-- Company / Support Footer -->
+      <footer class="l-footer">
+        <div class="l-footer-brand" id="l-footer-brand"></div>
+        <div class="l-footer-row" id="l-footer-addr"></div>
+        <div class="l-footer-row" id="l-footer-biz"></div>
+        <div class="l-footer-row" id="l-footer-support"></div>
+        <div class="l-footer-copy" id="l-footer-copy"></div>
+      </footer>
     </div>
 
     <!-- i18n -->
@@ -658,6 +711,15 @@
             </div>`,
           )
           .join("");
+
+        if (c.footer) {
+          document.getElementById("l-footer-brand").innerHTML = c.footer.brand;
+          document.getElementById("l-footer-addr").innerHTML = c.footer.addr;
+          document.getElementById("l-footer-biz").innerHTML = c.footer.biz;
+          document.getElementById("l-footer-support").innerHTML =
+            c.footer.support;
+          document.getElementById("l-footer-copy").innerHTML = c.footer.copy;
+        }
       }
 
       function setLang(lang) {
