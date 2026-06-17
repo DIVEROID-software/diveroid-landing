@@ -46,7 +46,7 @@ window.LANDING_CONTENT = {
       biz: "사업자등록번호 716-81-03722 · 법인등록번호 110111-0950517 · 대표이사 김정일 (Kim Jungil)",
       support:
         '고객지원: <a href="mailto:help@diveroid.com">help@diveroid.com</a> · <a href="/support/">Support Center</a>',
-      copy: "© 2026 OceanWick Co., Ltd. All rights reserved.",
+      copy: "© 2026 oceanwick inc. All rights reserved.",
     },
   },
 
@@ -78,7 +78,7 @@ window.LANDING_CONTENT = {
       biz: "Business Registration No. 716-81-03722 · Corporate Registration No. 110111-0950517 · CEO Kim Jungil",
       support:
         'Support: <a href="mailto:help@diveroid.com">help@diveroid.com</a> · <a href="/support/">Support Center</a>',
-      copy: "© 2026 OceanWick Co., Ltd. All rights reserved.",
+      copy: "© 2026 oceanwick inc. All rights reserved.",
     },
   },
 };

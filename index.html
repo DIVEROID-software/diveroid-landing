@@ -681,6 +681,14 @@
     <script>
       let currentLang = "ko";
 
+      /* ─────────────────────────────────────────────────────────────
+         법인 식별정보 푸터 토글 (회사명·사업자번호·법인번호·대표자)
+         - false: 평소 노출 (고객용 = DIVEROID 브랜드 우선, 회사 식별정보 숨김)
+         - true : 구글·애플 등 인증 필요 시 잠깐 켜서 회사 정보 노출
+         인증 끝나면 다시 false 로 되돌리세요.
+      ───────────────────────────────────────────────────────────── */
+      const SHOW_LEGAL_INFO = false;
+
       function render(lang) {
         const c = window.LANDING_CONTENT[lang];
         if (!c) return;
@@ -713,12 +721,19 @@
           .join("");
 
         if (c.footer) {
-          document.getElementById("l-footer-brand").innerHTML = c.footer.brand;
-          document.getElementById("l-footer-addr").innerHTML = c.footer.addr;
-          document.getElementById("l-footer-biz").innerHTML = c.footer.biz;
+          const brandEl = document.getElementById("l-footer-brand");
+          const addrEl = document.getElementById("l-footer-addr");
+          const bizEl = document.getElementById("l-footer-biz");
+          brandEl.innerHTML = c.footer.brand;
+          addrEl.innerHTML = c.footer.addr;
+          bizEl.innerHTML = c.footer.biz;
           document.getElementById("l-footer-support").innerHTML =
             c.footer.support;
           document.getElementById("l-footer-copy").innerHTML = c.footer.copy;
+          /* 회사명·주소·사업자/법인번호·대표자 줄 — 인증 시에만 노출 */
+          brandEl.style.display = SHOW_LEGAL_INFO ? "" : "none";
+          addrEl.style.display = SHOW_LEGAL_INFO ? "" : "none";
+          bizEl.style.display = SHOW_LEGAL_INFO ? "" : "none";
         }
       }
 
