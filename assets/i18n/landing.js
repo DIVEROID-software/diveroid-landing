@@ -41,12 +41,12 @@ window.LANDING_CONTENT = {
       sign: "다이브로이드 팀 🤿",
     },
     footer: {
-      brand: "오션윅 주식회사 (OceanWick Co., Ltd.) — DIVEROID 브랜드 운영사",
+      brand: "오션윅 주식회사 (Oceanwick Inc.) — DIVEROID 브랜드 운영사",
       addr: "서울특별시 강남구 도산대로 145, 11층 1114호 (신사동) · 대한민국",
       biz: "사업자등록번호 716-81-03722 · 법인등록번호 110111-0950517 · 대표이사 김정일 (Kim Jungil)",
       support:
         '고객지원: <a href="mailto:help@diveroid.com">help@diveroid.com</a> · <a href="/support/">Support Center</a>',
-      copy: "© 2026 oceanwick inc. All rights reserved.",
+      copy: "© 2026 Oceanwick Inc. All rights reserved.",
     },
   },
 
@@ -73,12 +73,12 @@ window.LANDING_CONTENT = {
       sign: "The DIVEROID Team 🤿",
     },
     footer: {
-      brand: "OceanWick Co., Ltd. — operator of the DIVEROID brand",
+      brand: "Oceanwick Inc. — operator of the DIVEROID brand",
       addr: "11F-1114, 145 Dosan-daero, Gangnam-gu, Seoul 06036, Republic of Korea",
       biz: "Business Registration No. 716-81-03722 · Corporate Registration No. 110111-0950517 · CEO Kim Jungil",
       support:
         'Support: <a href="mailto:help@diveroid.com">help@diveroid.com</a> · <a href="/support/">Support Center</a>',
-      copy: "© 2026 oceanwick inc. All rights reserved.",
+      copy: "© 2026 Oceanwick Inc. All rights reserved.",
     },
   },
 };
