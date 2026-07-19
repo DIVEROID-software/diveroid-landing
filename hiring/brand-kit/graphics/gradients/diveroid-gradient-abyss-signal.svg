@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">DIVEROID Abyss Signal gradient</title>
+  <desc id="desc">A deep ocean violet-to-blue DIVEROID brand gradient for hero and launch backgrounds.</desc>
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07131C"/>
+      <stop offset="0.3" stop-color="#201748"/>
+      <stop offset="0.62" stop-color="#3D2683"/>
+      <stop offset="1" stop-color="#36A9E1"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="18%" cy="14%" r="32%">
+      <stop offset="0" stop-color="#8DD7FF" stop-opacity="0.86"/>
+      <stop offset="1" stop-color="#8DD7FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="78%" cy="18%" r="36%">
+      <stop offset="0" stop-color="#7E14FF" stop-opacity="0.64"/>
+      <stop offset="1" stop-color="#7E14FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#base)"/>
+  <rect width="1600" height="900" fill="url(#glowA)"/>
+  <rect width="1600" height="900" fill="url(#glowB)"/>
+</svg>
