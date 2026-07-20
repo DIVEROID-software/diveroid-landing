@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, follow" />
+    <title>DIVEROID 채용 지원자 개인정보 처리 안내</title>
+    <link rel="icon" href="./favicon.svg" />
+    <link rel="stylesheet" href="./tokens/diveroid.css" />
+    <style>
+      :root {
+        --page-ink: var(--dv-color-neutral-950, #07131c);
+        --page-copy: var(--dv-color-neutral-700, #36505e);
+        --page-line: var(--dv-color-border-subtle, #d5e3ea);
+        --page-paper: var(--dv-color-bg-canvas, #f6fafc);
+        --page-violet: var(--dv-color-deep-violet, #201748);
+        --page-accent: var(--dv-color-surface-blue, #36a9e1);
+      }
+
+      * { box-sizing: border-box; }
+
+      html {
+        color: var(--page-ink);
+        background: var(--page-paper);
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--dv-font-ko, -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif);
+        letter-spacing: var(--dv-letter-spacing-ko-text, -0.01em);
+      }
+
+      a { color: inherit; }
+
+      .topbar {
+        position: sticky;
+        z-index: 10;
+        top: 0;
+        display: flex;
+        min-height: 64px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 max(24px, calc((100vw - 1120px) / 2));
+        color: #fff;
+        background: color-mix(in srgb, var(--page-violet), transparent 4%);
+        backdrop-filter: blur(18px);
+      }
+
+      .brand {
+        font-family: var(--dv-font-en, sans-serif);
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        text-decoration: none;
+      }
+
+      .back {
+        color: var(--dv-color-neutral-200, #d5e3ea);
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .hero {
+        padding: 104px max(24px, calc((100vw - 1120px) / 2)) 88px;
+        color: #fff;
+        background:
+          radial-gradient(circle at 82% 22%, color-mix(in srgb, var(--page-accent), transparent 68%), transparent 34%),
+          var(--page-violet);
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--page-accent);
+        font-family: var(--dv-font-en, sans-serif);
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+      }
+
+      h1 {
+        max-width: 820px;
+        margin: 18px 0 0;
+        font-size: clamp(40px, 6vw, 72px);
+        font-weight: 650;
+        letter-spacing: -0.045em;
+        line-height: 1.08;
+      }
+
+      .hero-copy {
+        max-width: 760px;
+        margin: 28px 0 0;
+        color: var(--dv-color-neutral-200, #d5e3ea);
+        font-size: 17px;
+        line-height: 1.75;
+      }
+
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 24px;
+        margin-top: 32px;
+        color: var(--dv-color-neutral-300, #b4c8d3);
+        font-size: 13px;
+      }
+
+      main {
+        width: min(1120px, calc(100% - 48px));
+        margin: 0 auto;
+        padding: 88px 0 120px;
+      }
+
+      .notice {
+        display: grid;
+        grid-template-columns: minmax(180px, 0.28fr) minmax(0, 1fr);
+        gap: 48px;
+        border-top: 1px solid var(--page-line);
+        padding: 48px 0;
+      }
+
+      .notice-number {
+        color: var(--page-accent);
+        font-family: var(--dv-font-en, sans-serif);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: clamp(25px, 3vw, 36px);
+        font-weight: 650;
+        letter-spacing: -0.035em;
+        line-height: 1.25;
+      }
+
+      h3 {
+        margin: 30px 0 0;
+        font-size: 18px;
+        line-height: 1.5;
+      }
+
+      p, li, td, th, dd, dt {
+        font-size: 15px;
+        line-height: 1.75;
+      }
+
+      .notice p, .notice ul, .notice dl { margin: 18px 0 0; }
+      .notice ul { padding-left: 20px; }
+      .notice li + li { margin-top: 8px; }
+
+      .data-table {
+        width: 100%;
+        margin-top: 24px;
+        border-collapse: collapse;
+        border-top: 2px solid var(--page-violet);
+      }
+
+      .data-table th,
+      .data-table td {
+        border-bottom: 1px solid var(--page-line);
+        padding: 16px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .data-table th {
+        width: 180px;
+        color: var(--page-violet);
+        background: color-mix(in srgb, var(--page-accent), transparent 92%);
+        font-weight: 750;
+      }
+
+      .callout {
+        margin-top: 28px;
+        border-left: 4px solid var(--page-accent);
+        padding: 20px 22px;
+        color: var(--page-copy);
+        background: #fff;
+      }
+
+      .contact {
+        display: grid;
+        grid-template-columns: 120px minmax(0, 1fr);
+        gap: 10px 20px;
+      }
+
+      .contact dt { color: var(--page-copy); }
+      .contact dd { margin: 0; font-weight: 700; }
+      .contact a { color: var(--page-violet); text-underline-offset: 3px; }
+
+      footer {
+        padding: 36px max(24px, calc((100vw - 1120px) / 2));
+        color: var(--dv-color-neutral-300, #b4c8d3);
+        background: var(--page-violet);
+        font-size: 12px;
+        line-height: 1.7;
+      }
+
+      @media (max-width: 720px) {
+        .topbar {
+          min-height: 56px;
+          padding-inline: 16px;
+        }
+
+        .brand { font-size: 19px; }
+        .back { font-size: 11px; }
+
+        .hero {
+          padding: 56px 16px 52px;
+        }
+
+        h1 {
+          margin-top: 14px;
+          font-size: clamp(36px, 11vw, 44px);
+          line-height: 1.12;
+        }
+
+        .hero-copy {
+          margin-top: 20px;
+          font-size: 15px;
+          line-height: 1.68;
+        }
+
+        .meta {
+          display: grid;
+          gap: 5px;
+          margin-top: 22px;
+        }
+
+        main {
+          width: min(100% - 32px, 1120px);
+          padding: 44px 0 80px;
+        }
+
+        .notice {
+          grid-template-columns: 1fr;
+          gap: 10px;
+          padding: 32px 0;
+        }
+
+        h2 { font-size: 27px; }
+        .data-table, .data-table tbody, .data-table tr, .data-table th, .data-table td { display: block; }
+        .data-table th { width: 100%; border-bottom: 0; padding: 13px 12px 6px; }
+        .data-table td { padding: 6px 12px 14px; }
+        .callout { margin-top: 20px; padding: 16px; }
+        .contact { grid-template-columns: 1fr; gap: 2px; }
+        .contact dd + dt { margin-top: 12px; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./">DIVEROID</a>
+      <a class="back" href="./#apply">채용 페이지로 돌아가기 ↗</a>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">DIVEROID CAREERS · PRIVACY</p>
+      <h1>채용 지원자<br />개인정보 처리 안내</h1>
+      <p class="hero-copy">이 안내는 DIVEROID 제품과 앱 이용자가 아니라, 채용에 지원하거나 채용 전형에 참여하는 분의 개인정보에 적용됩니다. 지원 단계와 이후 전형에서 어떤 정보를 왜 확인하는지 구분해 설명합니다.</p>
+      <div class="meta"><span>시행일 2026년 7월 20일</span><span>오션윅 주식회사 · DIVEROID</span><span>문의 people@diveroid.com</span></div>
+    </section>
+
+    <main>
+      <section class="notice">
+        <div class="notice-number">01 · SCOPE</div>
+        <div>
+          <h2>누구에게 적용되나요?</h2>
+          <p>DIVEROID 채용 사이트에서 지원서를 제출하거나, AI 인터뷰·담당자 인터뷰·대표 인터뷰·레퍼런스 체크·온라인 프로토타이핑 테스트·대면 인터뷰에 참여하는 지원자에게 적용됩니다.</p>
+          <p>제품 계정, 다이빙 로그, 위치, 사진·영상 등 DIVEROID 서비스 이용 정보는 이 채용 안내의 대상이 아닙니다.</p>
+        </div>
+      </section>
+
+      <section class="notice">
+        <div class="notice-number">02 · APPLICATION</div>
+        <div>
+          <h2>지원서를 낼 때 수집하는 정보</h2>
+          <table class="data-table">
+            <tbody>
+              <tr><th>필수 정보</th><td>이름, 이메일, 연락처, 지원 포지션과 경력·주니어 트랙, 신사 오피스 출근 가능 여부, 합류 가능 시점</td></tr>
+              <tr><th>평가 자료</th><td>이력서·포트폴리오 링크, AI 작업 기록 링크, 가장 자신 있는 작업, DIVEROID에서 해보고 싶은 일</td></tr>
+              <tr><th>선택 정보</th><td>지원자가 ‘마지막으로 전하고 싶은 말’에 직접 작성한 내용</td></tr>
+              <tr><th>유입 정보</th><td>UTM 캠페인·광고·콘텐츠 값, 유입 도메인, 처음 방문한 시각과 페이지 내 진입 위치. 채용 광고의 효과와 지원 경로를 분석하기 위해 저장될 수 있습니다.</td></tr>
+            </tbody>
+          </table>
+          <div class="callout">AI 작업 기록에는 선택한 업무·프로젝트만 포함해 주세요. 개인 대화는 제외할 수 있고, API 키·비밀번호·개인정보는 해당 부분만 가릴 수 있습니다. 현·전 직장이나 고객의 기밀이 포함된 대화는 제출하지 마세요.</div>
+        </div>
+      </section>
+
+      <section class="notice">
+        <div class="notice-number">03 · NEXT STAGES</div>
+        <div>
+          <h2>지원 이후 전형에서 추가로 확인하는 정보</h2>
+          <table class="data-table">
+            <tbody>
+              <tr><th>온라인 인터뷰</th><td>지원자 영상·음성, 인터뷰 답변 원문과 전사본, 접속·진행 기록. 각 인터뷰 시작 전에 녹화·녹음 범위와 보관 기간을 다시 안내합니다.</td></tr>
+              <tr><th>레퍼런스 체크</th><td>지원자가 제공한 레퍼런스의 이름·연락처·지원자와의 관계, 레퍼런스가 답한 실제 역할·기여·협업·실행 관련 내용. 지원자 동의를 받은 뒤 최소 3명에게 진행하며 현재 직장에는 명시적 동의 없이 연락하지 않습니다.</td></tr>
+              <tr><th>프로토타이핑 테스트</th><td>테스트 결과물, AI 작업 과정, 작업 화면, 지원자 영상·음성과 판단 설명. 시작 전에 기록 범위와 이용 목적을 별도로 안내합니다.</td></tr>
+              <tr><th>대면 인터뷰</th><td>면접 답변과 평가 기록, 조건 협의에 필요한 경력·보상·합류 관련 정보</td></tr>
+            </tbody>
+          </table>
+          <div class="callout">지원서 제출만으로 이후 전형의 영상·음성·화면 기록에 포괄 동의한 것으로 처리하지 않습니다. 새 정보가 필요한 단계마다 항목, 목적, 열람자, 보관 기간을 먼저 안내합니다.</div>
+        </div>
+      </section>
+
+      <section class="notice">
+        <div class="notice-number">04 · PURPOSE</div>
+        <div>
+          <h2>어디에 사용하나요?</h2>
+          <ul>
+            <li>지원서 접수, 본인 확인과 전형 일정 안내</li>
+            <li>경력·직무 역량·협업 방식·오너십·실행력과 DIVEROID 팀 적합성 평가</li>
+            <li>지원서의 주장, 인터뷰 답변, 결과물과 작업 과정의 교차 검증</li>
+            <li>채용 문의 응대, 지원 현황 관리와 조건 협의</li>
+            <li>지원 경로와 채용 광고 성과의 통계 분석</li>
+          </ul>
+          <p>지원자의 자료를 제품 개발, 마케팅 소재 또는 범용 AI 모델 학습에 사용하지 않습니다.</p>
+        </div>
+      </section>
+
+      <section class="notice">
+        <div class="notice-number">05 · ACCESS &amp; STORAGE</div>
+        <div>
+          <h2>누가 보고, 어디에 보관하나요?</h2>
+          <p>해당 포지션의 담당 평가자, 채용 담당자와 최종 의사결정에 필요한 대표자만 업무상 필요한 범위에서 확인합니다. 지원서는 현재 채용 접수·관리 도구인 Notion에 저장되며, 지원자가 제공한 외부 링크의 원본은 Google Drive, Dropbox, Notion 등 지원자가 선택한 서비스에 남아 있습니다.</p>
+          <p>온라인 인터뷰나 테스트에서 별도 외부 서비스를 사용하거나 정보가 국외에서 처리되는 경우, 서비스명, 이전되는 항목, 국가, 시점·방법과 보관 기간을 해당 전형 시작 전에 안내합니다.</p>
+        </div>
+      </section>
+
+      <section class="notice">
+        <div class="notice-number">06 · RETENTION</div>
+        <div>
+          <h2>얼마나 보관하고 어떻게 파기하나요?</h2>
+          <p>지원서와 제출 자료는 채용 평가와 조건 협의 목적을 달성할 때까지 보관하고, 목적 달성 후 지체 없이 파기합니다. 향후 포지션 제안을 위한 인재풀 보관이 필요한 경우에는 기간과 항목을 밝히고 별도 동의를 받습니다.</p>
+          <p>영상·음성·화면 녹화물 등 이후 전형에서 새로 수집하는 정보는 각 전형 전에 고지한 기간이 끝나면 파기합니다. 관계 법령에 따라 보존할 의무가 있는 정보는 해당 법정 기간에만 분리 보관합니다.</p>
+        </div>
+      </section>
+
+      <section class="notice">
+        <div class="notice-number">07 · SHARING</div>
+        <div>
+          <h2>제3자 제공과 레퍼런스 연락</h2>
+          <p>지원자의 개인정보를 판매하지 않으며, 법령상 의무가 있거나 지원자가 명시적으로 요청·동의한 경우를 제외하고 채용 목적 밖의 제3자에게 제공하지 않습니다.</p>
+          <p>레퍼런스 체크 연락처는 해당 확인을 위해서만 사용합니다. 레퍼런스 제공자에게도 연락 시 정보 수집 목적과 처리 기준을 안내합니다.</p>
+        </div>
+      </section>
+
+      <section class="notice">
+        <div class="notice-number">08 · RIGHTS</div>
+        <div>
+          <h2>지원자가 요청할 수 있는 것</h2>
+          <ul>
+            <li>개인정보의 열람, 정정, 삭제와 처리정지 요청</li>
+            <li>동의 철회와 지원서 삭제 요청</li>
+            <li>온라인 전형 기록의 수집 범위·열람자·보관 기간 확인</li>
+          </ul>
+          <p>필수 정보 수집·이용에 동의하지 않을 수 있으나, 이 경우 온라인 지원서 접수와 채용 절차 진행이 어려울 수 있습니다.</p>
+        </div>
+      </section>
+
+      <section class="notice">
+        <div class="notice-number">09 · CONTACT</div>
+        <div>
+          <h2>문의와 권리 행사</h2>
+          <dl class="contact">
+            <dt>처리 주체</dt><dd>오션윅 주식회사 (DIVEROID)</dd>
+            <dt>이메일</dt><dd><a href="mailto:people@diveroid.com">people@diveroid.com</a></dd>
+            <dt>주소</dt><dd>서울특별시 강남구 도산대로 145, 11층</dd>
+          </dl>
+          <p>안내 내용이 바뀌면 시행일과 변경 내용을 이 페이지에 표시합니다.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>© 2026 OceanWick Co., Ltd. · DIVEROID Careers · Every dive maps the ocean</footer>
+  </body>
+</html>
