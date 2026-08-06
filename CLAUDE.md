@@ -30,15 +30,13 @@
 # 1. 수정 후 로컬 미리보기 (정적 페이지만: 아무 정적 서버 / API 포함: vercel dev)
 python3 -m http.server 8000   # http://localhost:8000
 
-# 2. 커밋·푸시
+# 2. 커밋·푸시 — main에 push하면 GitHub Actions가 자동으로 프로덕션 배포
 git add -A && git commit -m "수정 내용" && git push
-
-# 3. 프로덕션 배포 — ⚠️ push만으로는 배포되지 않음. 이 명령까지 실행해야 라이브 반영
-vercel --prod
 ```
 
-- Vercel CLI 로그인 필요 (`vercel login`). 프로젝트 연결은 `.vercel/`에 이미 설정됨.
-- 배포 후 https://www.diveroid.com 에서 실제 반영 확인까지가 작업 완료.
+- 자동배포: `.github/workflows/deploy.yml` (push → Vercel `--prod`). 진행 상황은 GitHub → Actions 탭.
+- 백업 수단: Vercel CLI 권한이 있으면 `vercel --prod` 수동 배포도 가능.
+- 배포 후 https://www.diveroid.com 에서 실제 반영 확인까지가 작업 완료 (반영까지 1~2분).
 
 ## ⚠️ 가드레일 (건드리지 말 것)
 

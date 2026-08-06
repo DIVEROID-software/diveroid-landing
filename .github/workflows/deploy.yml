@@ -1,0 +1,25 @@
+name: Deploy to Vercel (Production)
+
+# main에 push되면 자동으로 www.diveroid.com 프로덕션 배포
+# 필요 Secrets (repo Settings → Secrets and variables → Actions):
+#   VERCEL_TOKEN      — Vercel 계정 토큰 (vercel.com/account/tokens)
+#   VERCEL_ORG_ID     — team_3zjUp9UuLY1tzb2g4XQ1scwt
+#   VERCEL_PROJECT_ID — prj_7ZvbKAi1It5CuEg3kqKfbUrx23JT
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+      - name: Deploy (production)
+        run: vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN }}

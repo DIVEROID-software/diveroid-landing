@@ -13,7 +13,7 @@
 | #   | 항목                                                                                                                                                       | 상태                                                                                                |
 | --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | 1   | GitHub `DIVEROID-software/diveroid-landing` **Write 권한**                                                                                                 | ✅ 이미 보유 (`Kim-Jay-Jungil` 계정으로 7월 /hiring 페이지 push 이력 확인)                          |
-| 2   | **Vercel 접근** (팀 `ilpatto-9874s-projects` / 프로젝트 `diveroid-landing`) — ⚠️git push만으로는 배포되지 않음. 실제 반영엔 `vercel --prod` 실행 권한 필요 | ⏳ 상훈 팀장에게 요청 (팀 멤버 초대). 7월 hiring 배포에 쓰신 경로가 있다면 그대로 사용하셔도 됩니다 |
+| 2   | Vercel 배포 | ✅ 불필요 — **main에 push하면 GitHub Actions가 자동 배포** (Vercel 계정·권한 없이 작업 가능) |
 | 3   | 도메인(Hostinger)                                                                                                                                          | ✅ 이미 jay@diveroid.com 계정 소유 (만료 2027-02-11, 갱신 관리 부탁드립니다)                        |
 
 ## 3. 작업 시작하기 (Jay의 AI에게 시키면 되는 것)
@@ -24,7 +24,7 @@ cd diveroid-landing
 # 저장소 루트의 CLAUDE.md를 AI가 자동으로 읽습니다 (파일 지도·배포법·가드레일 전부 있음)
 ```
 
-- 순수 정적 HTML이라 개발 환경 설치가 필요 없습니다. 파일 고치고 → push → `vercel --prod` 끝.
+- 순수 정적 HTML이라 개발 환경 설치가 필요 없습니다. **파일 고치고 push하면 자동 배포**됩니다 (GitHub Actions).
 - 카피(문구) 수정: `assets/i18n/landing.js` (한/영 사전) 또는 `index.html`
 - 이미지 교체: `assets/images/` (1~2MB 이하 압축 권장)
 
@@ -32,7 +32,7 @@ cd diveroid-landing
 
 | 하고 싶은 것      | 방법                                                                                      |
 | ----------------- | ----------------------------------------------------------------------------------------- |
-| 문구 바꾸기       | `assets/i18n/landing.js`에서 KO/EN 동시 수정 → push → `vercel --prod`                     |
+| 문구 바꾸기       | `assets/i18n/landing.js`에서 KO/EN 동시 수정 → push (자동배포)                     |
 | 배경 사진 교체    | `assets/images/bg-N.jpg` 교체(같은 파일명) → push → 배포                                  |
 | 새 페이지 추가    | 폴더 만들고 `index.html` (예: `about/index.html` → /about) + `sitemap.xml`에 추가         |
 | 구독자 명단 보기  | Notion DB (Season2_CS 워크스페이스, DB ID `3371717f-...`) — 폼 제출이 자동 저장됨         |
