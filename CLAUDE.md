@@ -33,7 +33,7 @@ python3 -m http.server 8000   # http://localhost:8000
 # 2. 커밋·푸시
 git add -A && git commit -m "수정 내용" && git push
 
-# 3. 프로덕션 배포
+# 3. 프로덕션 배포 — ⚠️ push만으로는 배포되지 않음. 이 명령까지 실행해야 라이브 반영
 vercel --prod
 ```
 
