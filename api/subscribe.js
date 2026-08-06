@@ -1,3 +1,23 @@
+/**
+ * DIVEROID Landing Page — 이메일 구독 API
+ * 최종 업데이트: 2026-04-04
+ *
+ * Vercel Serverless Function (Edge Runtime X, Node.js)
+ * 엔드포인트: POST /api/subscribe
+ * 요청: { email: string, lang: "ko" | "en" }
+ * 응답: { success: true } | { error: string }
+ *
+ * Notion DB 저장 구조:
+ *   Email        (title)  — 이메일 주소
+ *   Registered At (date)  — 구독 날짜
+ *   Language     (select) — KO | EN
+ *   Source       (select) — Landing Page
+ *   Status       (select) — New
+ *
+ * 필요 환경변수 (Vercel Dashboard → Settings → Environment Variables):
+ *   NOTION_API_KEY      — Notion Integration Secret
+ *   DATABASE_ID는 코드에 하드코딩: 3371717f-b044-81ac-9159-d9b4afedb80e
+ */
 export default async function handler(req, res) {
   // CORS
   res.setHeader("Access-Control-Allow-Origin", "*");

@@ -1,5 +1,7 @@
 # DIVEROID Landing Page (임시 홈페이지)
 
+**최종 업데이트:** 2026-04-04
+
 ## 프로젝트 개요
 
 www.diveroid.com 에 연결할 임시 홈페이지.
