@@ -21,6 +21,7 @@
 | `api/subscribe.js`                   | Vercel 서버리스 함수 — 이메일 구독 → Notion DB 저장                                                                                    |
 | `assets/images/`                     | 배경 4장(bg-1~4.jpg) + OG 공유카드(og-image.jpg)                                                                                       |
 | `assets/i18n/landing.js`             | KO/EN 문구 사전 — **카피 수정은 대부분 여기**                                                                                          |
+| `hiring/`                            | 채용 페이지 (Jay 제작, 2026-07 — 빌드된 정적 산출물 + Notion 지원폼)                                                                   |
 | `CNAME`, `sitemap.xml`, `robots.txt` | 도메인·SEO 설정                                                                                                                        |
 
 ## 수정 → 배포 절차
