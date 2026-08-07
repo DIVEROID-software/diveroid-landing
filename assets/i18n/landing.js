@@ -1,6 +1,6 @@
 /**
  * DIVEROID Landing Page — i18n Content
- * 최종 업데이트: 2026-04-04
+ * 최종 업데이트: 2026-08-07
  *
  * 텍스트 수정 방법:
  *   1. 이 파일에서 ko / en 섹션 내용을 수정
@@ -16,6 +16,7 @@
  *   letter.csItems  — CS 항목 목록 [{icon, text, email}]
  *   letter.closing  — 마무리 인사
  *   letter.sign     — 서명
+ *   hiring         — 채용 CTA (상단 네비 pill + 본문 카드) → /hiring/
  */
 window.LANDING_CONTENT = {
   /* ═══════════ 한국어 ═══════════ */
@@ -39,6 +40,13 @@ window.LANDING_CONTENT = {
       ],
       closing: "곧 만나요! 🤙",
       sign: "다이브로이드 팀 🤿",
+    },
+    hiring: {
+      navBtn: "채용 중",
+      eyebrow: "We're hiring",
+      title: "시즌 2를 함께 만들 동료를 찾습니다",
+      body: "여섯 개 포지션, 열두 개 지원 트랙을 상시 채용하고 있어요.\n바다를 이해하는 AI, 함께 만들어요.",
+      btn: "채용 공고 보기",
     },
     footer: {
       brand: "오션윅 주식회사 (Oceanwick Inc.) — DIVEROID 브랜드 운영사",
@@ -71,6 +79,13 @@ window.LANDING_CONTENT = {
       ],
       closing: "See you soon! 🤙",
       sign: "The DIVEROID Team 🤿",
+    },
+    hiring: {
+      navBtn: "Hiring",
+      eyebrow: "We're hiring",
+      title: "Help us build Season 2",
+      body: "Six positions, twelve application tracks — always open.\nJob postings are written in Korean.",
+      btn: "See open roles",
     },
     footer: {
       brand: "Oceanwick Inc. — operator of the DIVEROID brand",

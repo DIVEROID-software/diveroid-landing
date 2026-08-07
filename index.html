@@ -1,7 +1,7 @@
 <!--
   ╔══════════════════════════════════════════════════════════╗
   ║  DIVEROID Landing Page — index.html                     ║
-  ║  최종 업데이트: 2026-04-04                               ║
+  ║  최종 업데이트: 2026-08-07                               ║
   ║  라이브 URL: https://www.diveroid.com                    ║
   ╠══════════════════════════════════════════════════════════╣
   ║  수정 가이드                                             ║
@@ -185,6 +185,37 @@
         background: rgba(255, 255, 255, 0.18);
       }
 
+      /* 채용 pill — 상단 상시 노출 → /hiring/ */
+      .nav-hiring {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 15px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(144, 224, 239, 0.38);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+        backdrop-filter: blur(8px);
+        transition:
+          background 0.2s,
+          border-color 0.2s;
+      }
+      .nav-hiring:hover {
+        background: rgba(114, 210, 240, 0.22);
+        border-color: rgba(144, 224, 239, 0.7);
+      }
+      .nav-hiring-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #72d2f0;
+        box-shadow: 0 0 6px #72d2f0;
+        animation: pulse 2s infinite;
+      }
+
       .nav-chat-btn {
         display: flex;
         align-items: center;
@@ -259,9 +290,14 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        /* auto 마진으로 세로 중앙정렬 (justify-content:center와 달리
+           내용이 화면보다 길어지면 상단이 잘리지 않고 그대로 스크롤됨) */
+        justify-content: flex-start;
         padding: 80px 24px 32px;
         overflow-y: auto;
+      }
+      .main > .badge {
+        margin-top: auto;
       }
 
       /* Badge */
@@ -459,6 +495,84 @@
         margin: 36px 0 28px;
       }
 
+      /* ── Hiring CTA ── */
+      .l-hiring {
+        padding: 20px 22px;
+        border-radius: 16px;
+        border: 1px solid rgba(114, 210, 240, 0.34);
+        background: linear-gradient(
+          135deg,
+          rgba(114, 210, 240, 0.13) 0%,
+          rgba(58, 96, 216, 0.16) 100%
+        );
+        box-shadow: 0 6px 30px rgba(58, 96, 216, 0.18);
+      }
+      .l-hiring-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #90e0ef;
+        margin-bottom: 10px;
+      }
+      .l-hiring-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.5;
+        margin-bottom: 6px;
+      }
+      .l-hiring-body {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.62);
+        line-height: 1.7;
+        white-space: pre-line;
+        margin-bottom: 16px;
+      }
+      .l-hiring-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 22px;
+        border-radius: 12px;
+        border: 1px solid rgba(144, 224, 239, 0.55);
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+        backdrop-filter: blur(8px);
+        transition:
+          background 0.2s,
+          border-color 0.2s,
+          box-shadow 0.2s,
+          transform 0.15s;
+      }
+      .l-hiring-btn:hover {
+        background: linear-gradient(
+          120deg,
+          #72d2f0 0%,
+          #50a9fc 55%,
+          #3a60d8 100%
+        );
+        border-color: transparent;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 20px rgba(80, 169, 252, 0.45);
+      }
+      .l-hiring-arrow {
+        transition: transform 0.2s;
+      }
+      .l-hiring-btn:hover .l-hiring-arrow {
+        transform: translateX(3px);
+      }
+      .nav-hiring:focus-visible,
+      .l-hiring-btn:focus-visible {
+        outline: 2px solid #90e0ef;
+        outline-offset: 3px;
+      }
+
       /* CS Section */
       .l-cs-title {
         font-size: 14px;
@@ -523,7 +637,7 @@
       .l-footer {
         width: 100%;
         max-width: 900px;
-        margin: 64px auto 0;
+        margin: 64px auto auto;
         padding: 24px 16px 8px;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
         text-align: center;
@@ -560,9 +674,16 @@
         nav {
           padding: 16px 20px;
         }
+        .nav-right {
+          gap: 10px;
+        }
+        .nav-hiring {
+          font-size: 11px;
+          padding: 6px 12px;
+          gap: 6px;
+        }
         .main {
           padding: 72px 20px 32px;
-          justify-content: flex-start;
         }
         .badge {
           align-self: center;
@@ -603,6 +724,22 @@
           padding: 14px 20px;
           text-align: center;
         }
+        .l-hiring {
+          padding: 18px;
+        }
+        .l-hiring-title,
+        .l-hiring-body {
+          word-break: keep-all;
+        }
+        .l-hiring-body {
+          font-size: 14px;
+        }
+        .l-hiring-btn {
+          width: 100%;
+          justify-content: center;
+          font-size: 15px;
+          padding: 14px 20px;
+        }
         .l-cs-title {
           font-size: 15px;
         }
@@ -637,6 +774,10 @@
     <nav>
       <span class="nav-logo">DIVEROID</span>
       <div class="nav-right">
+        <a class="nav-hiring" href="/hiring/">
+          <span class="nav-hiring-dot"></span>
+          <span id="nav-hiring-text"></span>
+        </a>
         <div class="lang-switcher">
           <button class="lang-btn active" id="btn-ko" onclick="setLang('ko')">
             KO
@@ -676,6 +817,22 @@
             />
             <button class="l-email-btn" type="submit" id="l-email-btn"></button>
           </form>
+
+          <div class="l-divider"></div>
+
+          <!-- Hiring CTA → /hiring/ -->
+          <section class="l-hiring" aria-labelledby="l-hiring-title">
+            <span class="l-hiring-eyebrow">
+              <span class="nav-hiring-dot"></span>
+              <span id="l-hiring-eyebrow"></span>
+            </span>
+            <p class="l-hiring-title" id="l-hiring-title"></p>
+            <p class="l-hiring-body" id="l-hiring-body"></p>
+            <a class="l-hiring-btn" href="/hiring/">
+              <span id="l-hiring-btn-text"></span>
+              <span class="l-hiring-arrow" aria-hidden="true">→</span>
+            </a>
+          </section>
 
           <div class="l-divider"></div>
 
@@ -732,6 +889,18 @@
         document.getElementById("l-cs-body").textContent = L.csBody;
         document.getElementById("l-closing").textContent = L.closing;
         document.getElementById("l-sign").textContent = L.sign;
+
+        if (c.hiring) {
+          document.getElementById("nav-hiring-text").textContent =
+            c.hiring.navBtn;
+          document.getElementById("l-hiring-eyebrow").textContent =
+            c.hiring.eyebrow;
+          document.getElementById("l-hiring-title").textContent =
+            c.hiring.title;
+          document.getElementById("l-hiring-body").textContent = c.hiring.body;
+          document.getElementById("l-hiring-btn-text").textContent =
+            c.hiring.btn;
+        }
 
         document.getElementById("l-cs-items").innerHTML = L.csItems
           .map(
