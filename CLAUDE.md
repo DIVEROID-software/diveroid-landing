@@ -21,7 +21,7 @@
 | `api/subscribe.js`                   | Vercel 서버리스 함수 — 이메일 구독 → Notion DB 저장                                                                                    |
 | `assets/images/`                     | 배경 4장(bg-1~4.jpg) + OG 공유카드(og-image.jpg)                                                                                       |
 | `assets/i18n/landing.js`             | KO/EN 문구 사전 — **카피 수정은 대부분 여기**                                                                                          |
-| `hiring/`                            | 채용 페이지 (Jay 제작, 2026-07 — 빌드된 정적 산출물 + Notion 지원폼)                                                                   |
+| `hiring/`                            | 채용 페이지 — **빌드 산출물. 직접 수정 금지** (아래 "채용 페이지" 참고)                                                                |
 | `CNAME`, `sitemap.xml`, `robots.txt` | 도메인·SEO 설정                                                                                                                        |
 
 ## 수정 → 배포 절차
@@ -38,7 +38,28 @@ git add -A && git commit -m "수정 내용" && git push
 - 백업 수단: Vercel CLI 권한이 있으면 `vercel --prod` 수동 배포도 가능.
 - 배포 후 https://www.diveroid.com 에서 실제 반영 확인까지가 작업 완료 (반영까지 1~2분).
 
-## ⚠️ 가드레일 (건드리지 말 것)
+## 채용 페이지 (`/hiring`) — 이 repo에 소스가 없음
+
+`hiring/`은 **Vite+React 프로젝트의 빌드 산출물**입니다. 미니파이된 번들을 직접 고치지 말고 반드시 소스에서 다시 빌드하세요.
+
+- **소스 위치**: `~/Documents/팀 비서 만들기/careers-site` — ⚠️ **git 저장소가 아니며 이 맥북에만 존재합니다** (원격·CI 없음)
+- **지원폼 백엔드**: 같은 소스의 `api/applications.ts` + `server/notionApplications.ts` → **별도 Vercel 프로젝트 `diveroid-careers`** (팀 `jays-projects-c61403c8`). 폼은 `https://diveroid-careers.vercel.app/api/applications`로 POST하며, 이 repo의 Actions 자동배포가 **커버하지 않습니다**
+- **필수/검증 로직은 프론트·서버 양쪽에 있습니다.** 한쪽만 고치면 폼이 조용히 깨지므로 항상 **백엔드 먼저** 배포하세요
+
+```bash
+cd ~/Documents/팀\ 비서\ 만들기/careers-site
+
+# 1) 백엔드 먼저 (서버 검증 완화가 프론트보다 앞서야 폼이 안 깨짐)
+vercel deploy --prod --yes
+
+# 2) 프론트: base=/hiring/ 필수 — 빼면 에셋 경로가 /assets/…로 나와 페이지가 깨집니다
+VITE_APPLICATIONS_API_URL="https://diveroid-careers.vercel.app/api/applications" \
+  npx vite build --base=/hiring/ --outDir /tmp/build-hiring --emptyOutDir
+
+# 3) 이 repo로 동기화 (해시 파일명이 바뀌므로 옛 번들 삭제) → push하면 자동배포
+```
+
+
 
 1. **`CNAME` 파일 삭제·수정 금지** — www.diveroid.com 연결이 끊어짐
 2. **`api/subscribe.js`의 비밀키는 코드에 없음** — `NOTION_API_KEY`는 Vercel Dashboard → Settings → Environment Variables에 있음. 코드에 키를 하드코딩하지 말 것 (Public repo!)
