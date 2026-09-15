@@ -1,0 +1,1 @@
+var e=`#apply`,t=`people@diveroid.com`,n=`https://diveroid-careers.vercel.app/api/applications`,r=`https://diveroid-careers.vercel.app/api/applications`.endsWith(`/applications`)?n.replace(/\/applications$/,`/interview`):`/api/interview`;export{r as i,e as n,t as r,n as t};
