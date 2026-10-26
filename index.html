@@ -19,19 +19,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DIVEROID — Season 2</title>
+    <title>DIVEROID — 워치다이브 (WatchDive) · Season 2</title>
     <meta
       name="description"
-      content="DIVEROID Season 2 Coming Soon. 고객지원은 정상 운영 중입니다."
+      content="DIVEROID의 워치다이브 (WatchDive): 호환 스마트워치를 다이브 컴퓨터로 활용하는 센서 하우징과 앱. 공식 제품 소개와 지원 모델을 확인하세요. 고객지원은 정상 운영 중입니다."
     />
+    <link rel="canonical" href="https://www.diveroid.com/" />
 
     <!-- Open Graph / 소셜 공유 카드 (인스타·카톡·페북·슬랙) -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="DIVEROID" />
-    <meta property="og:title" content="DIVEROID — Season 2" />
+    <meta property="og:title" content="DIVEROID — WatchDive &amp; Season 2" />
     <meta
       property="og:description"
-      content="AI Understands the Ocean. DIVEROID's new evolution is coming soon."
+      content="Discover WatchDive by DIVEROID: a sensor housing and app that turn a compatible smartwatch into a dive computer. Explore the official product page and supported models."
     />
     <meta property="og:url" content="https://www.diveroid.com/" />
     <meta
@@ -41,10 +42,10 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="DIVEROID — Season 2" />
+    <meta name="twitter:title" content="DIVEROID — WatchDive &amp; Season 2" />
     <meta
       name="twitter:description"
-      content="AI Understands the Ocean. DIVEROID's new evolution is coming soon."
+      content="Discover WatchDive by DIVEROID: a sensor housing and app that turn a compatible smartwatch into a dive computer. Explore the official product page and supported models."
     />
     <meta
       name="twitter:image"
@@ -496,6 +497,11 @@
       }
 
       /* ── Hiring CTA ── */
+      .l-watchdive-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
       .l-hiring {
         padding: 20px 22px;
         border-radius: 16px;
@@ -820,6 +826,18 @@
 
           <div class="l-divider"></div>
 
+          <!-- Static product copy and both locale links remain crawlable without JavaScript. -->
+          <section class="l-hiring" aria-labelledby="l-watchdive-title">
+            <h2 class="l-hiring-title" id="l-watchdive-title">워치다이브 (WatchDive) by DIVEROID</h2>
+            <p class="l-hiring-body" id="l-watchdive-body">워치다이브 (WatchDive)는 호환 스마트워치를 다이브 컴퓨터로 활용하는 DIVEROID의 센서 하우징과 앱입니다. 공식 제품 페이지에서 제품 소개와 지원 모델을 확인하세요.</p>
+            <div class="l-watchdive-links">
+              <a class="l-hiring-btn" href="https://watchdive.diveroid.com/ko" lang="ko">워치다이브 제품 소개 →</a>
+              <a class="l-hiring-btn" href="https://watchdive.diveroid.com/" lang="en">Explore WatchDive →</a>
+            </div>
+          </section>
+
+          <div class="l-divider"></div>
+
           <!-- Hiring CTA → /hiring/ -->
           <section class="l-hiring" aria-labelledby="l-hiring-title">
             <span class="l-hiring-eyebrow">
@@ -889,6 +907,13 @@
         document.getElementById("l-cs-body").textContent = L.csBody;
         document.getElementById("l-closing").textContent = L.closing;
         document.getElementById("l-sign").textContent = L.sign;
+
+        if (c.watchdive) {
+          document.getElementById("l-watchdive-title").textContent =
+            c.watchdive.title;
+          document.getElementById("l-watchdive-body").textContent =
+            c.watchdive.body;
+        }
 
         if (c.hiring) {
           document.getElementById("nav-hiring-text").textContent =

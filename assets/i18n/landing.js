@@ -41,6 +41,10 @@ window.LANDING_CONTENT = {
       closing: "곧 만나요! 🤙",
       sign: "다이브로이드 팀 🤿",
     },
+    watchdive: {
+      title: "워치다이브 (WatchDive) by DIVEROID",
+      body: "워치다이브 (WatchDive)는 호환 스마트워치를 다이브 컴퓨터로 활용하는 DIVEROID의 센서 하우징과 앱입니다. 공식 제품 페이지에서 제품 소개와 지원 모델을 확인하세요.",
+    },
     hiring: {
       navBtn: "채용 중",
       eyebrow: "We're hiring",
@@ -79,6 +83,10 @@ window.LANDING_CONTENT = {
       ],
       closing: "See you soon! 🤙",
       sign: "The DIVEROID Team 🤿",
+    },
+    watchdive: {
+      title: "WatchDive by DIVEROID",
+      body: "WatchDive by DIVEROID combines a sensor housing and app to turn a compatible smartwatch into a dive computer. Explore the official product page for details and supported models.",
     },
     hiring: {
       navBtn: "Hiring",
