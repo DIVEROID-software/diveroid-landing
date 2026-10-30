@@ -42,8 +42,10 @@
     document.querySelectorAll("[data-language]").forEach((button) => {
       button.setAttribute("aria-pressed", String(button.dataset.language === lang));
     });
+    // Link to the explicit locale route. The product site's root auto-detects
+    // locale from its own preference cookie/country, which can override ours.
     document.getElementById("watchdive-link").href = lang === "ko"
-      ? "https://watchdive.diveroid.com/ko" : "https://watchdive.diveroid.com/";
+      ? "https://watchdive.diveroid.com/ko/scuba" : "https://watchdive.diveroid.com/scuba";
     input.placeholder = copy.emailPlaceholder;
     document.title = copy.pageTitle;
     document.querySelector('meta[name="description"]').content = copy.pageDescription;

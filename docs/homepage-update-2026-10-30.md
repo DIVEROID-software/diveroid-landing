@@ -2,8 +2,9 @@
 
 The temporary DIVEROID homepage now leads with WatchDive, using an off-white background, black rules, bold typography, the brand blue and square buttons. Season 2 signup and support remain available.
 
-- Korean WatchDive destination: https://watchdive.diveroid.com/ko (redirects to `/ko/scuba`).
-- English WatchDive destination: https://watchdive.diveroid.com/ (redirects to `/scuba`).
+- Korean WatchDive destination: https://watchdive.diveroid.com/ko/scuba.
+- English WatchDive destination: https://watchdive.diveroid.com/scuba.
+- Follow-up fix: link directly to the locale-specific segment. The product root `/` can redirect to Japanese (or another locale) based on its preference cookie or access country, even when the DIVEROID homepage is English. Verified with a Japanese locale cookie and Japanese Accept-Language: `/` reaches `/ja/scuba`, while `/scuba` stays English and `/ko/scuba` stays Korean.
 - Both hiring entry points use `data-ko-only`; JavaScript toggles `hidden`, and an English-language CSS rule prevents a recruiting flash before initialization.
 - Locale priority: valid `?lang=ko|en`, then the existing `sessionStorage.lang`, then Korean. Switching language updates the query parameter and accessible pressed state.
 - The existing subscription API and request payload are retained. The frontend now uses the same-origin endpoint and checks `{ success: true }`, with pending, success and retry states.
