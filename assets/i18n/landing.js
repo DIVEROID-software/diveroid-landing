@@ -1,107 +1,89 @@
-/**
- * DIVEROID Landing Page — i18n Content
- * 최종 업데이트: 2026-08-07
- *
- * 텍스트 수정 방법:
- *   1. 이 파일에서 ko / en 섹션 내용을 수정
- *   2. git push → Vercel 자동 배포 → www.diveroid.com 즉시 반영
- *
- * 구조:
- *   badge          — 상단 배지 텍스트
- *   letter.headline — 메인 헤드라인
- *   letter.sub      — 서브 헤드라인
- *   letter.emailBtn — 이메일 구독 버튼 텍스트
- *   letter.csTitle  — CS 섹션 제목
- *   letter.csBody   — CS 섹션 본문
- *   letter.csItems  — CS 항목 목록 [{icon, text, email}]
- *   letter.closing  — 마무리 인사
- *   letter.sign     — 서명
- *   hiring         — 채용 CTA (상단 네비 pill + 본문 카드) → /hiring/
- */
+/** DIVEROID homepage copy · Updated 2026-10-30. */
 window.LANDING_CONTENT = {
-  /* ═══════════ 한국어 ═══════════ */
-  ko: {
-    nav: { chat: "실시간 상담" },
-    badge: "DIVEROID SEASON 2 — Coming Soon",
-    letter: {
-      headline: "바다를 이해하는 AI",
-      sub: "DIVEROID의 새로운 진화가 곧 시작됩니다.",
-      emailPlaceholder: "이메일 주소를 입력하세요",
-      emailBtn: "가장 먼저 출시 소식 받기",
-      csTitle: "💬 언제든 연락 주세요",
-      csBody:
-        "고객지원은 지금도 정상 운영 중이에요.\n궁금한 점이 있으시면 편하게 연락해 주세요!",
-      csItems: [
-        {
-          icon: "💬",
-          text: "화면 오른쪽 하단 상담 버튼을 눌러주세요",
-          email: false,
-        },
-      ],
-      closing: "곧 만나요! 🤙",
-      sign: "다이브로이드 팀 🤿",
+  "ko": {
+    "home": {
+      "skip": "본문 바로가기",
+      "navLabel": "주 메뉴",
+      "navSupport": "고객지원",
+      "headlineOne": "이미 가진 워치를,",
+      "headlineTwo": "다이빙컴퓨터로.",
+      "heroDescription": "일상에서 쓰던 스마트워치와 함께 바닷속으로. 워치다이브(WatchDive)의 센서 하우징과 앱이 호환 Apple Watch·Galaxy Watch에 다이빙 정보를 전합니다.",
+      "watchdiveCta": "WatchDive 미리 만나보기",
+      "heroNote": "출시 준비 중 · 제품 정보, 지원 모델, 출시 알림은 공식 페이지에서 확인하세요.",
+      "photoAlt": "수중에서 WatchDive를 착용하고 다이빙 정보를 확인하는 모습",
+      "photoCaption": "익숙한 워치로 만나는 새로운 깊이.",
+      "factsLabel": "WatchDive 소개",
+      "factOneTitle": "내 워치와 함께",
+      "factOneBody": "호환 스마트워치에 센서 하우징과 앱을 더해 다이빙 정보를 확인하세요.",
+      "factTwoTitle": "스쿠버부터 프리다이빙까지",
+      "factTwoBody": "수심, 다이빙 시간, 수온. 다이빙 중 필요한 정보를 손목에서 확인하세요.",
+      "factThreeTitle": "다이빙 후에도 이어지는 기록",
+      "factThreeBody": "물 밖에서는 DIVEROID 앱과 동기화해 나의 다이빙 로그를 돌아보세요.",
+      "chapterTitle": "바다를 더 깊이 이해하는 다음 장.",
+      "chapterBody": "DIVEROID는 새로운 시즌을 준비하고 있습니다. 다이빙의 경험과 기록이 이어지는 미래, 그 다음 소식을 전해드릴게요.",
+      "emailLabel": "DIVEROID 시즌 2 소식 받기",
+      "emailPlaceholder": "이메일 주소",
+      "emailButton": "소식 받기 ↗",
+      "emailNote": "입력한 이메일로 DIVEROID의 새 소식을 보내드립니다.",
+      "privacy": "개인정보처리방침",
+      "emailPending": "신청 중…",
+      "emailSuccess": "신청이 완료되었습니다. 새로운 소식으로 만나요.",
+      "emailError": "신청을 완료하지 못했습니다. 잠시 후 다시 시도해 주세요.",
+      "supportTitle": "다이빙은 계속되니까. 고객지원도 그대로.",
+      "supportBody": "제품과 앱에 대한 도움이 필요하면 언제든 연락해 주세요. 고객지원은 정상 운영 중입니다.",
+      "supportCta": "고객지원 센터 ↗",
+      "pageTitle": "DIVEROID — 워치다이브 (WatchDive) · Season 2",
+      "pageDescription": "이미 가진 스마트워치를 다이빙컴퓨터로. DIVEROID의 WatchDive 프리랜딩 페이지에서 제품과 지원 모델, 출시 소식을 확인하세요. 고객지원은 정상 운영 중입니다."
     },
-    watchdive: {
-      title: "워치다이브 (WatchDive) by DIVEROID",
-      body: "워치다이브 (WatchDive)는 호환 스마트워치를 다이브 컴퓨터로 활용하는 DIVEROID의 센서 하우징과 앱입니다. 공식 제품 페이지에서 제품 소개와 지원 모델을 확인하세요.",
-    },
-    hiring: {
-      navBtn: "채용 중",
-      eyebrow: "We're hiring",
-      title: "시즌 2를 함께 만들 동료를 찾습니다",
-      body: "여섯 개 포지션, 열두 개 지원 트랙을 상시 채용하고 있어요.\n바다를 이해하는 AI, 함께 만들어요.",
-      btn: "채용 공고 보기",
-    },
-    footer: {
-      brand: "오션윅 주식회사 (Oceanwick Inc.) — DIVEROID 브랜드 운영사",
-      addr: "서울특별시 강남구 도산대로 145, 11층 1114호 (신사동) · 대한민국",
-      biz: "사업자등록번호 716-81-03722 · 법인등록번호 110111-0950517 · 대표이사 김정일 (Kim Jungil)",
-      support:
-        '고객지원: <a href="mailto:help@diveroid.com">help@diveroid.com</a> · <a href="/support/">Support Center</a>',
-      copy: "© 2026 Oceanwick Inc. All rights reserved.",
-    },
+    "footer": {
+      "brand": "오션윅 주식회사 (Oceanwick Inc.) — DIVEROID 브랜드 운영사",
+      "addr": "서울특별시 강남구 도산대로 145, 11층 1114호 (신사동) · 대한민국",
+      "biz": "사업자등록번호 716-81-03722 · 법인등록번호 110111-0950517 · 대표이사 김정일 (Kim Jungil)",
+      "support": "고객지원: <a href=\"mailto:help@diveroid.com\">help@diveroid.com</a> · <a href=\"/support/\">Support Center</a>",
+      "copy": "© 2026 Oceanwick Inc. All rights reserved."
+    }
   },
-
-  /* ═══════════ ENGLISH ═══════════ */
-  en: {
-    nav: { chat: "Live Chat" },
-    badge: "DIVEROID SEASON 2 — Coming Soon",
-    letter: {
-      headline: "AI Understands the Ocean",
-      sub: "DIVEROID's new evolution is coming soon",
-      emailPlaceholder: "Enter your email address",
-      emailBtn: "Get Early Access",
-      csTitle: "💬 We're here for you",
-      csBody:
-        "Our customer support is fully up and running.\nDon't hesitate to reach out anytime!",
-      csItems: [
-        {
-          icon: "💬",
-          text: "Click the chat button in the bottom right corner",
-          email: false,
-        },
-      ],
-      closing: "See you soon! 🤙",
-      sign: "The DIVEROID Team 🤿",
+  "en": {
+    "home": {
+      "skip": "Skip to content",
+      "navLabel": "Main navigation",
+      "navSupport": "Support",
+      "headlineOne": "YOUR WATCH.",
+      "headlineTwo": "YOUR NEXT DIVE.",
+      "heroDescription": "Take the smartwatch you already wear underwater. WatchDive combines a sensor housing and app to turn a compatible Apple Watch or Galaxy Watch into a dive computer.",
+      "watchdiveCta": "Meet WatchDive",
+      "heroNote": "Coming soon · Explore the official pre-launch page for details, compatible watches and launch updates.",
+      "photoAlt": "WatchDive worn underwater, displaying dive information on a smartwatch",
+      "photoCaption": "A familiar watch. A new depth.",
+      "factsLabel": "About WatchDive",
+      "factOneTitle": "The watch you already wear",
+      "factOneBody": "Pair a compatible smartwatch with the sensor housing and app to see your dive information.",
+      "factTwoTitle": "Scuba & freediving",
+      "factTwoBody": "Check your depth, dive time and water temperature, right on your wrist.",
+      "factThreeTitle": "Your dive, remembered",
+      "factThreeBody": "Back at the surface, sync with the DIVEROID app and revisit your dive log.",
+      "chapterTitle": "A deeper understanding. A new chapter.",
+      "chapterBody": "We’re getting ready for DIVEROID Season 2. A future that brings your dive experiences and records together. Be the first to hear what’s next.",
+      "emailLabel": "Stay in the loop with DIVEROID Season 2",
+      "emailPlaceholder": "Your email address",
+      "emailButton": "Keep me posted ↗",
+      "emailNote": "We’ll send DIVEROID updates to your email.",
+      "privacy": "Privacy policy",
+      "emailPending": "Submitting…",
+      "emailSuccess": "You’re on the list. We’ll be in touch with what’s next.",
+      "emailError": "We couldn’t complete your signup. Please try again shortly.",
+      "supportTitle": "Your dives continue. So does our support.",
+      "supportBody": "Need a hand with your product or app? Our customer support is here and running as usual.",
+      "supportCta": "Support center ↗",
+      "pageTitle": "DIVEROID — WatchDive · Season 2",
+      "pageDescription": "Turn the smartwatch you already wear into a dive computer. Explore the official WatchDive pre-launch page for product details, compatible watches and launch updates."
     },
-    watchdive: {
-      title: "WatchDive by DIVEROID",
-      body: "WatchDive by DIVEROID combines a sensor housing and app to turn a compatible smartwatch into a dive computer. Explore the official product page for details and supported models.",
-    },
-    hiring: {
-      navBtn: "Hiring",
-      eyebrow: "We're hiring",
-      title: "Help us build Season 2",
-      body: "Six positions, twelve application tracks — always open.\nJob postings are written in Korean.",
-      btn: "See open roles",
-    },
-    footer: {
-      brand: "Oceanwick Inc. — operator of the DIVEROID brand",
-      addr: "11F-1114, 145 Dosan-daero, Gangnam-gu, Seoul 06036, Republic of Korea",
-      biz: "Business Registration No. 716-81-03722 · Corporate Registration No. 110111-0950517 · CEO Kim Jungil",
-      support:
-        'Support: <a href="mailto:help@diveroid.com">help@diveroid.com</a> · <a href="/support/">Support Center</a>',
-      copy: "© 2026 Oceanwick Inc. All rights reserved.",
-    },
-  },
+    "footer": {
+      "brand": "Oceanwick Inc. — operator of the DIVEROID brand",
+      "addr": "11F-1114, 145 Dosan-daero, Gangnam-gu, Seoul 06036, Republic of Korea",
+      "biz": "Business Registration No. 716-81-03722 · Corporate Registration No. 110111-0950517 · CEO Kim Jungil",
+      "support": "Support: <a href=\"mailto:help@diveroid.com\">help@diveroid.com</a> · <a href=\"/support/\">Support Center</a>",
+      "copy": "© 2026 Oceanwick Inc. All rights reserved."
+    }
+  }
 };
