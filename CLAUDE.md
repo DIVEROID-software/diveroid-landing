@@ -6,7 +6,7 @@
 ## 한눈에 보기
 
 - **스택**: 순수 정적 HTML/CSS/JS — 빌드 없음, 프레임워크 없음, npm 없음
-- **호스팅**: Vercel (프로젝트 `diveroid-landing`) + 커스텀 도메인 `www.diveroid.com`
+- **호스팅**: `www.diveroid.com`의 정적 파일은 GitHub Pages, 이메일 구독 API는 Vercel 프로젝트 `diveroid-landing`에서 제공합니다 (2026-10-30 운영 응답 확인).
 - **GitHub**: `DIVEROID-software/diveroid-landing` (Public)
 - **도메인**: Hostinger에서 등록 (jay@diveroid.com 계정, 만료 2027-02-11)
 
@@ -36,7 +36,8 @@ python3 -m http.server 8000   # http://localhost:8000
 git add -A && git commit -m "수정 내용" && git push
 ```
 
-- 자동배포: `.github/workflows/deploy.yml` (push → Vercel `--prod`). 진행 상황은 GitHub → Actions 탭.
+- 자동배포: main push 시 GitHub Pages와 `.github/workflows/deploy.yml`의 Vercel `--prod` 배포가 함께 실행됩니다. 두 실행 및 실제 www 도메인의 파일 반영을 확인하세요.
+- 이메일 구독은 `https://diveroid-landing.vercel.app/api/subscribe`로 요청합니다. www 도메인의 `/api/subscribe`는 정적 호스트에서 404를 반환하므로 상대 경로로 바꾸지 마세요.
 - 백업 수단: Vercel CLI 권한이 있으면 `vercel --prod` 수동 배포도 가능.
 - 배포 후 https://www.diveroid.com 에서 실제 반영 확인까지가 작업 완료 (반영까지 1~2분).
 

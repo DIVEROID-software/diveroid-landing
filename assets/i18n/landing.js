@@ -33,7 +33,12 @@ window.LANDING_CONTENT = {
       "supportBody": "제품과 앱에 대한 도움이 필요하면 언제든 연락해 주세요. 고객지원은 정상 운영 중입니다.",
       "supportCta": "고객지원 센터 ↗",
       "pageTitle": "DIVEROID — 워치다이브 (WatchDive) · Season 2",
-      "pageDescription": "이미 가진 스마트워치를 다이빙컴퓨터로. DIVEROID의 WatchDive 프리랜딩 페이지에서 제품과 지원 모델, 출시 소식을 확인하세요. 고객지원은 정상 운영 중입니다."
+      "pageDescription": "이미 가진 스마트워치를 다이빙컴퓨터로. DIVEROID의 WatchDive 프리랜딩 페이지에서 제품과 지원 모델, 출시 소식을 확인하세요. 고객지원은 정상 운영 중입니다.",
+      "resourcesLabel": "자료 및 협업",
+      "pressTitle": "프레스킷",
+      "pressBody": "브랜드 소개와 제품 사진, 보도자료를 확인하세요.",
+      "creatorTitle": "크리에이터 협업",
+      "creatorBody": "DIVEROID와 함께할 콘텐츠 협업을 알아보세요."
     },
     "footer": {
       "brand": "오션윅 주식회사 (Oceanwick Inc.) — DIVEROID 브랜드 운영사",
@@ -76,7 +81,12 @@ window.LANDING_CONTENT = {
       "supportBody": "Need a hand with your product or app? Our customer support is here and running as usual.",
       "supportCta": "Support center ↗",
       "pageTitle": "DIVEROID — WatchDive · Season 2",
-      "pageDescription": "Turn the smartwatch you already wear into a dive computer. Explore the official WatchDive pre-launch page for product details, compatible watches and launch updates."
+      "pageDescription": "Turn the smartwatch you already wear into a dive computer. Explore the official WatchDive pre-launch page for product details, compatible watches and launch updates.",
+      "resourcesLabel": "Media and creator resources",
+      "pressTitle": "Press kit",
+      "pressBody": "Find brand information, product imagery and press releases.",
+      "creatorTitle": "Creator partnerships",
+      "creatorBody": "Explore ways to create with DIVEROID."
     },
     "footer": {
       "brand": "Oceanwick Inc. — operator of the DIVEROID brand",

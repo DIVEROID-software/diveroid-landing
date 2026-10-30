@@ -7,7 +7,7 @@ The temporary DIVEROID homepage now leads with WatchDive, using an off-white bac
 - Follow-up fix: link directly to the locale-specific segment. The product root `/` can redirect to Japanese (or another locale) based on its preference cookie or access country, even when the DIVEROID homepage is English. Verified with a Japanese locale cookie and Japanese Accept-Language: `/` reaches `/ja/scuba`, while `/scuba` stays English and `/ko/scuba` stays Korean.
 - Both hiring entry points use `data-ko-only`; JavaScript toggles `hidden`, and an English-language CSS rule prevents a recruiting flash before initialization.
 - Locale priority: valid `?lang=ko|en`, then the existing `sessionStorage.lang`, then Korean. Switching language updates the query parameter and accessible pressed state.
-- The existing subscription API and request payload are retained. The frontend now uses the same-origin endpoint and checks `{ success: true }`, with pending, success and retry states.
+- The existing subscription API and request payload are retained. The frontend uses the original Vercel endpoint (`https://diveroid-landing.vercel.app/api/subscribe`) and checks `{ success: true }`, with pending, success and retry states. The custom domain serves static files through GitHub Pages; a same-origin API URL would return 404.
 - `/hiring/`, `/support/`, `/privacy/`, `/app/`, the API implementation and domain configuration are unchanged. Legal company details remain hidden under the existing setting.
 
 ## Sources and assets
@@ -26,6 +26,14 @@ Product copy was checked against the official WatchDive Korean and English pages
 - Query-string locale precedence and switching back to Korean checked.
 - Signup success, HTTP failure, unexpected success payload, network failure, duplicate prevention and language changes during submission checked using browser-local mock responses. No test email was written to the live database; end-to-end email storage was not tested.
 - JavaScript syntax, duplicate HTML IDs, local asset paths, WatchDive destination HTTP 200 after redirects and `git diff --check` passed.
+
+## Follow-up: public resources and locale links
+
+- Added a bilingual press-kit / creator-partnership link row above customer support.
+- Verified public destinations: `https://diveroid.ai/press/?lang=ko|en` and `https://diveroid.ai/creator?lang=ko|en`; each receives the homepage language explicitly.
+- Browser click-through checks passed for all three destinations (WatchDive, press and creator) in both Korean and English.
+- Added a version query to CSS, copy and behavior assets so returning browsers load the update instead of a cached prior asset.
+- Restored the original cross-origin subscription API after confirming the production static host and tested the request destination with a mocked success response. No live test signup was submitted.
 
 ## Rollback
 

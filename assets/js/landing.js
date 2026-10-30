@@ -46,6 +46,8 @@
     // locale from its own preference cookie/country, which can override ours.
     document.getElementById("watchdive-link").href = lang === "ko"
       ? "https://watchdive.diveroid.com/ko/scuba" : "https://watchdive.diveroid.com/scuba";
+    document.getElementById("press-link").href = `https://diveroid.ai/press/?lang=${lang}`;
+    document.getElementById("creator-link").href = `https://diveroid.ai/creator?lang=${lang}`;
     input.placeholder = copy.emailPlaceholder;
     document.title = copy.pageTitle;
     document.querySelector('meta[name="description"]').content = copy.pageDescription;
@@ -78,7 +80,8 @@
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 15000);
     try {
-      const response = await fetch("/api/subscribe", {
+      // www.diveroid.com serves static pages; subscriptions run on Vercel.
+      const response = await fetch("https://diveroid-landing.vercel.app/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, lang }),
