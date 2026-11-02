@@ -38,6 +38,7 @@ git add -A && git commit -m "수정 내용" && git push
 
 - 자동배포: main push 시 GitHub Pages와 `.github/workflows/deploy.yml`의 Vercel `--prod` 배포가 함께 실행됩니다. 두 실행 및 실제 www 도메인의 파일 반영을 확인하세요.
 - 이메일 구독은 `https://diveroid-landing.vercel.app/api/subscribe`로 요청합니다. www 도메인의 `/api/subscribe`는 정적 호스트에서 404를 반환하므로 상대 경로로 바꾸지 마세요.
+- 구독 저장 DB는 DIVEROID 워크스페이스의 `ec0b5179-81ca-8247-8258-018de4f6f76d`입니다. 2026-11-02 인증키 교체 및 실제 저장 검증 완료. 원인·데이터 조사 범위·운영 점검은 `docs/subscription-recovery-2026-11-02.md` 참고.
 - 백업 수단: Vercel CLI 권한이 있으면 `vercel --prod` 수동 배포도 가능.
 - 배포 후 https://www.diveroid.com 에서 실제 반영 확인까지가 작업 완료 (반영까지 1~2분).
 

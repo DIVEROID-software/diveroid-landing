@@ -35,10 +35,12 @@ cd diveroid-landing
 | 문구 바꾸기       | `assets/i18n/landing.js`에서 KO/EN 동시 수정 → push (자동배포)                     |
 | 배경 사진 교체    | `assets/images/bg-N.jpg` 교체(같은 파일명) → push → 배포                                  |
 | 새 페이지 추가    | 폴더 만들고 `index.html` (예: `about/index.html` → /about) + `sitemap.xml`에 추가         |
-| 구독자 명단 보기  | Notion DB (Season2_CS 워크스페이스, DB ID `3371717f-...`) — 폼 제출이 자동 저장됨         |
+| 구독자 명단 보기  | Notion DIVEROID 워크스페이스 → User Feedback → Season 2 Early Access — 사전 신청자 (DB ID `ec0b5179-81ca-8247-8258-018de4f6f76d`) |
 | 이메일 폼 고장 시 | Vercel Dashboard → diveroid-landing → Logs / Environment Variables(`NOTION_API_KEY`) 확인 |
 
 ## 5. 꼭 지켜주세요
+
+2026-11-02 구독 저장 연결 복구 및 조사 결과: `docs/subscription-recovery-2026-11-02.md`. 이전 DB 주소와 무효 인증키를 교체하고 실제 폼 저장을 확인했습니다.
 
 1. `CNAME` 파일 = 도메인 연결 그 자체. 삭제 금지.
 2. `/privacy`, `/app` 주소 변경 금지 (앱 심사·제품 박스 QR에 박혀 있음).
