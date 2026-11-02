@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Verify subscription storage behavior
-        run: node --test test/subscribe.test.mjs
+        run: node --test test/*.test.mjs
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
       - name: Deploy (production)
