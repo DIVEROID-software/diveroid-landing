@@ -36,7 +36,10 @@ export default async function handler(req, res) {
   }
 
   const NOTION_API_KEY = process.env.NOTION_API_KEY;
-  const DATABASE_ID = "3371717f-b044-81ac-9159-d9b4afedb80e";
+  // 🔴 2026-11-02 교체 — 구 DB(3371717f)는 8/22 워크스페이스 이전 후 404.
+  //    그 사이(8월말~11/2) 제출분은 저장 실패로 유실됐다. 신 DB = 「Season 2 Early Access — 사전 신청자」(User Feedback 아래),
+  //    integration "Maya People Manager" 와 공유 필수 (안 하면 또 500).
+  const DATABASE_ID = "ec0b5179-81ca-8247-8258-018de4f6f76d";
 
   try {
     const response = await fetch("https://api.notion.com/v1/pages", {
