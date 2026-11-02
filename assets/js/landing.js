@@ -95,7 +95,7 @@
       submissionState = "success";
       input.value = "";
       // Analytics must never turn a successful signup into a visible failure.
-      try { window.DIVEROID_MEASUREMENT?.signupSaved(result.eventId); } catch {}
+      try { if (result.created !== false) window.DIVEROID_MEASUREMENT?.signupSaved(result.eventId); } catch {}
     } catch {
       submissionState = "error";
     } finally {

@@ -92,7 +92,7 @@ test("first touch persists across visits, malformed and expired attribution is r
 });
 test("metadata allowlist rejects PII, arbitrary geography, oversized click IDs and raw URLs", () => {
   const out = core.notionMetadata({ consent: consent(), first: { page: "https://www.diveroid.com/?email=private@example.com", referrer: "https://search.example/path?secret=abc", fbclid: "x".repeat(300), utm_source: "private@example.com" }, last: { utm_campaign: "launch", ttclid: "abcdefgh123456" }, context: { visits: 2000, timeToSignup: Infinity, language: "ko-KR", timezone: "Asia/Seoul", ip: "192.0.2.1", userAgent: "secret" }, country: "US" }, { "x-vercel-ip-country": "KR", "x-forwarded-for": "192.0.2.1" });
-  assert.equal(out.Country.rich_text[0].text.content, "KR");
+  assert.equal(out.Country, undefined); // Stored by the signup server independently of optional measurement.
   assert.equal(out.Visits.number, 1000);
   assert.equal(out["Time to Signup"].number, 0);
   assert.doesNotMatch(JSON.stringify(out), /private@example|192\.0\.2|secret|fbclid/);

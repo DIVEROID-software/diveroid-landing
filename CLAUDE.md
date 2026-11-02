@@ -5,7 +5,7 @@
 
 ## 한눈에 보기
 
-- **스택**: 순수 정적 HTML/CSS/JS — 빌드 없음, 프레임워크 없음. `package.json`은 서버 함수의 ESM 형식(`type: module`)과 Node 테스트만 선언하며 런타임 의존성은 없음.
+- **스택**: 순수 정적 HTML/CSS/JS — 빌드 없음, 프레임워크 없음. 서버는 ESM Node 함수이며 `@vercel/functions`의 `waitUntil`로 신청 후 이메일 검증을 처리합니다. 테스트 전 `npm ci`를 실행하세요.
 - **호스팅**: `www.diveroid.com`의 정적 파일은 GitHub Pages, 이메일 구독 API는 Vercel 프로젝트 `diveroid-landing`에서 제공합니다 (2026-10-30 운영 응답 확인).
 - **GitHub**: `DIVEROID-software/diveroid-landing` (Public)
 - **도메인**: Hostinger에서 등록 (jay@diveroid.com 계정, 만료 2027-02-11)
@@ -39,6 +39,7 @@ git add -A && git commit -m "수정 내용" && git push
 - 자동배포: main push 시 GitHub Pages와 `.github/workflows/deploy.yml`의 Vercel `--prod` 배포가 함께 실행됩니다. 두 실행 및 실제 www 도메인의 파일 반영을 확인하세요.
 - 이메일 구독은 `https://diveroid-landing.vercel.app/api/subscribe`로 요청합니다. www 도메인의 `/api/subscribe`는 정적 호스트에서 404를 반환하므로 상대 경로로 바꾸지 마세요.
 - 구독 저장 DB는 DIVEROID 워크스페이스의 `ec0b5179-81ca-8247-8258-018de4f6f76d`입니다. 2026-11-02 인증키 교체 및 실제 저장 검증 완료. 원인·데이터 조사 범위·운영 점검은 `docs/subscription-recovery-2026-11-02.md` 참고.
+- 새 이메일은 Reoon power 모드로 자동 검증하며, IP 기반 `Country`를 서버에서 저장합니다. 재신청은 기존 행을 재사용합니다. 키·재시도·운영 방식과 한계는 `docs/automatic-email-verification.md` 참고.
 - 백업 수단: Vercel CLI 권한이 있으면 `vercel --prod` 수동 배포도 가능.
 - 배포 후 https://www.diveroid.com 에서 실제 반영 확인까지가 작업 완료 (반영까지 1~2분).
 

@@ -88,7 +88,6 @@ export function notionMetadata(input, headers = {}, now = Date.now()) {
     props["Time to Signup"] = { number: data.context.timeToSignup };
     props.Visits = { number: data.context.visits };
     // Vercel supplies coarse IP-derived geography. The IP and full UA are never saved.
-    if (/^[A-Z]{2}$/.test(headers["x-vercel-ip-country"] || "")) text("Country", headers["x-vercel-ip-country"]);
     if (/^[A-Za-z0-9-]{1,12}$/.test(headers["x-vercel-ip-country-region"] || "")) text("Region", headers["x-vercel-ip-country-region"]);
   }
   if (data.first) {

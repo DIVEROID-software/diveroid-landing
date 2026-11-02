@@ -1,6 +1,16 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import handler from "../api/subscribe.js";
+import { createHandler } from "../api/subscribe.js";
+const handler = createHandler({ schedule() {}, verify: async () => {} });
+
+function mockStorage(onSave) {
+  return async (url, options) => {
+    if (String(url).endsWith('/query')) return { ok: true, json: async () => ({ results: [], has_more: false }) };
+    const body = JSON.parse(options.body);
+    onSave?.(url, options, body);
+    return { ok: true, json: async () => ({ id: 'new-page', properties: body.properties }) };
+  };
+}
 
 function response() {
   return {
@@ -28,12 +38,11 @@ test("subscription storage contract", async (t) => {
 
   await t.test("stores the form fields in the requested database", async () => {
     let saved;
-    globalThis.fetch = async (url, options) => {
+    globalThis.fetch = mockStorage((url, options) => {
       assert.equal(url, "https://api.notion.com/v1/pages");
       assert.equal(options.headers.Authorization, "Bearer test-token");
       saved = JSON.parse(options.body);
-      return { ok: true };
-    };
+    });
     const res = response();
     await handler({ method: "POST", body: { email: " subscriber@example.com ", lang: "en" } }, res);
     assert.equal(res.statusCode, 200);
@@ -45,11 +54,12 @@ test("subscription storage contract", async (t) => {
     assert.equal(saved.properties.Language.select.name, "EN");
     assert.equal(saved.properties.Source.select.name, "Landing Page");
     assert.equal(saved.properties.Status.select.name, "New");
+    assert.equal(saved.properties["Reoon Status"].select.name, "pending");
   });
 
   await t.test("only consented, allowlisted metadata reaches Notion", async () => {
     let saved;
-    globalThis.fetch = async (_, options) => { saved = JSON.parse(options.body); return { ok: true }; };
+    globalThis.fetch = mockStorage((_, options) => { saved = JSON.parse(options.body); });
     const metadata = { consent: { version: "2026-11-02", at: new Date().toISOString(), analytics: true, ads: false },
       signupNoticeVersion: "2026-11-02", first: { page: "https://www.diveroid.com/?email=private@example.com", referrer: "https://search.example/path?email=private@example.com", utm_source: "newsletter", fbclid: "secretClick123" },
       last: { utm_campaign: "season2", email: "private@example.com" }, context: { device: "Mobile", browser: "Safari", os: "iOS", language: "ko-KR", timezone: "Asia/Seoul", visits: 2, timeToSignup: 31, fingerprint: "secret-fingerprint" } };
@@ -63,9 +73,50 @@ test("subscription storage contract", async (t) => {
     assert.doesNotMatch(JSON.stringify(saved), /private@example|secretClick|fingerprint|192\.0\.2/);
     metadata.consent.analytics = false;
     await handler({ method: "POST", headers: { "x-vercel-ip-country": "KR" }, body: { email: "subscriber@example.com", metadata } }, response());
-    assert.equal(saved.properties.Country, undefined);
+    assert.equal(saved.properties.Country.rich_text[0].text.content, "KR");
     assert.equal(saved.properties["UTM Campaign"], undefined);
     assert.equal(saved.properties.Device, undefined);
+  });
+
+  await t.test("country is server-derived even without optional consent; raw IP and client country are ignored", async () => {
+    let saved;
+    globalThis.fetch = mockStorage((_, __, body) => { saved = body; });
+    for (const country of ["KR", undefined, "XX", "ZZ", "KR,US", ["KR"]]) {
+      await handler({ method: "POST", headers: { "x-vercel-ip-country": country, "x-forwarded-for": "192.0.2.42" },
+        body: { email: "country@example.com", metadata: { country: "US", context: { country: "US" } } } }, response());
+      assert.equal(saved.properties.Country?.rich_text[0]?.text.content, country === "KR" ? "KR" : undefined);
+      assert.doesNotMatch(JSON.stringify(saved), /192\.0\.2|"US"/);
+    }
+  });
+
+  await t.test("repeated/case-varied signup keeps the existing unsubscribed record and avoids verification", async () => {
+    let calls = 0;
+    const custom = createHandler({ verify() { assert.fail("Duplicate was verified again"); } });
+    globalThis.fetch = async (url, options) => {
+      calls++; assert.match(url, /\/query$/);
+      assert.equal(JSON.parse(options.body).filter.title.contains, "existing@example.com");
+      return { ok: true, json: async () => ({ results: [{ id: "existing", properties: {
+        Email: { title: [{ plain_text: "Existing@Example.com" }] }, Status: { select: { name: "Unsubscribed" } },
+        "Signup ID": { rich_text: [{ plain_text: "old-signup" }] },
+      } }], has_more: false }) };
+    };
+    const res = response();
+    await custom({ method: "POST", body: { email: " Existing@Example.com " } }, res);
+    assert.equal(res.statusCode, 200); assert.equal(res.body.created, false);
+    assert.equal(res.body.eventId, "old-signup"); assert.equal(calls, 1);
+  });
+
+  await t.test("simultaneous submissions coalesce and the response does not wait for Reoon", async () => {
+    let creates = 0, verifies = 0, finish;
+    const work = new Promise(resolve => { finish = resolve; });
+    const scheduled = [];
+    const custom = createHandler({ schedule: promise => scheduled.push(promise), verify: () => { verifies++; return work; } });
+    globalThis.fetch = mockStorage(() => creates++);
+    const responses = [response(), response()];
+    await Promise.all(responses.map(res => custom({ method: "POST", body: { email: "parallel@example.com" } }, res)));
+    assert.equal(creates, 1); assert.equal(verifies, 1); assert.equal(scheduled.length, 1);
+    assert.deepEqual(responses.map(r => r.body.created).sort(), [false, true]);
+    finish(); await Promise.all(scheduled);
   });
 
   await t.test("invalid input does not call the storage service", async () => {
