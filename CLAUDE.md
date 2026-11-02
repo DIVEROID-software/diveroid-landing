@@ -5,7 +5,7 @@
 
 ## 한눈에 보기
 
-- **스택**: 순수 정적 HTML/CSS/JS — 빌드 없음, 프레임워크 없음, npm 없음
+- **스택**: 순수 정적 HTML/CSS/JS — 빌드 없음, 프레임워크 없음. `package.json`은 서버 함수의 ESM 형식(`type: module`)과 Node 테스트만 선언하며 런타임 의존성은 없음.
 - **호스팅**: `www.diveroid.com`의 정적 파일은 GitHub Pages, 이메일 구독 API는 Vercel 프로젝트 `diveroid-landing`에서 제공합니다 (2026-10-30 운영 응답 확인).
 - **GitHub**: `DIVEROID-software/diveroid-landing` (Public)
 - **도메인**: Hostinger에서 등록 (jay@diveroid.com 계정, 만료 2027-02-11)

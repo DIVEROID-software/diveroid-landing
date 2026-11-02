@@ -1,9 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
-
-const source = (await readFile(new URL("../api/subscribe.js", import.meta.url), "utf8")).replace('"../assets/js/measurement-core.mjs"', JSON.stringify(new URL("../assets/js/measurement-core.mjs", import.meta.url).href));
-const { default: handler } = await import(`data:text/javascript;base64,${Buffer.from(source).toString("base64")}`);
+import handler from "../api/subscribe.js";
 
 function response() {
   return {

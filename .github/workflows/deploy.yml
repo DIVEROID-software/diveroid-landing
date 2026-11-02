@@ -25,3 +25,15 @@ jobs:
         run: npm install -g vercel@latest
       - name: Deploy (production)
         run: vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Verify deployed function starts and accepts browser preflight
+        run: |
+          node --input-type=module <<'JS'
+          const url = 'https://diveroid-landing.vercel.app/api/subscribe';
+          for (const [method, status] of [['GET', 405], ['OPTIONS', 200]]) {
+            const res = await fetch(url, { method, signal: AbortSignal.timeout(15000) });
+            if (res.status !== status || res.headers.get('access-control-allow-origin') !== '*') {
+              throw new Error(`Subscription runtime check failed: ${method} ${res.status}`);
+            }
+          }
+          console.log('Subscription runtime and CORS verified without creating a signup.');
+          JS
