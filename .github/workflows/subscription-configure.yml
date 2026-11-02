@@ -1,0 +1,28 @@
+name: Restore subscription Notion connection
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify subscription storage behavior
+        run: node --test test/subscribe.test.mjs
+      - name: Validate Notion access and update production environment
+        env:
+          NOTION_SUBSCRIPTION_REPAIR_TOKEN: ${{ secrets.NOTION_SUBSCRIPTION_REPAIR_TOKEN }}
+        run: node scripts/configure-subscriptions.mjs
+      - name: Install Vercel CLI
+        run: npm install -g vercel@58.7.1
+      - name: Deploy with the updated connection
+        run: vercel deploy --prod --yes --token="$VERCEL_TOKEN"

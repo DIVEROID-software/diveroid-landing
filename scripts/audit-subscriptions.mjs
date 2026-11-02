@@ -61,6 +61,9 @@ if (variable) {
 const logs = spawnSync("vercel", ["logs", "--project", VERCEL_PROJECT_ID, "--scope", VERCEL_ORG_ID, "--since", "7d", "--limit", "1000", "--json", "--token", VERCEL_TOKEN], { encoding: "utf8", timeout: 90000, maxBuffer: 10 * 1024 * 1024 });
 const raw = `${logs.stdout ?? ""}\n${logs.stderr ?? ""}`;
 const entries = (logs.stdout ?? "").split("\n").flatMap((line) => { try { return [JSON.parse(line)]; } catch { return []; } });
+const subscriptions = entries.filter(entry => entry.requestPath?.split("?")[0] === "/api/subscribe");
+const timestamps = subscriptions.map(entry => entry.timestamp).filter(Boolean).sort();
+const counts = (items) => items.reduce((result, value) => { result[value] = (result[value] ?? 0) + 1; return result; }, {});
 report.logs = {
   exitStatus: logs.status,
   parsedEntries: entries.length,
@@ -69,5 +72,15 @@ report.logs = {
   knownErrors: Object.fromEntries(["unauthorized", "object_not_found", "validation_error", "restricted_resource", "API token is invalid", "Failed to save to Notion"].map((text) => [text, raw.split(text).length - 1])),
   retentionMentioned: /retention|outside.*range|plan.*limit/i.test(raw),
   permissionDenied: /forbidden|not authorized|project not found/i.test(raw),
+  subscriptionRequests: {
+    count: subscriptions.length,
+    uniqueRequestIds: new Set(subscriptions.map(entry => entry.id)).size,
+    methods: counts(subscriptions.map(entry => entry.requestMethod)),
+    statuses: counts(subscriptions.map(entry => entry.responseStatusCode)),
+    firstTimestamp: timestamps[0],
+    lastTimestamp: timestamps.at(-1),
+    entriesWithEmailAddress: subscriptions.filter(entry => /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i.test(JSON.stringify(entry))).length,
+    entriesWithInvalidToken: subscriptions.filter(entry => /API token is invalid/i.test(JSON.stringify(entry))).length,
+  },
 };
 console.log(JSON.stringify(report, null, 2));

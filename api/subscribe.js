@@ -1,6 +1,6 @@
 /**
  * DIVEROID Landing Page — 이메일 구독 API
- * 최종 업데이트: 2026-04-04
+ * 최종 업데이트: 2026-11-02
  *
  * Vercel Serverless Function (Edge Runtime X, Node.js)
  * 엔드포인트: POST /api/subscribe
@@ -16,8 +16,10 @@
  *
  * 필요 환경변수 (Vercel Dashboard → Settings → Environment Variables):
  *   NOTION_API_KEY      — Notion Integration Secret
- *   DATABASE_ID는 코드에 하드코딩: 3371717f-b044-81ac-9159-d9b4afedb80e
+ *   저장 DB: ec0b5179-81ca-8247-8258-018de4f6f76d
  */
+import { randomUUID } from "node:crypto";
+
 export default async function handler(req, res) {
   // CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -29,21 +31,28 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { email, lang } = req.body;
+  const { email: input, lang } = req.body ?? {};
+  const email = typeof input === "string" ? input.trim() : "";
 
-  if (!email || !email.includes("@")) {
+  if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ error: "Invalid email" });
   }
 
   const NOTION_API_KEY = process.env.NOTION_API_KEY;
-  // 🔴 2026-11-02 교체 — 구 DB(3371717f)는 8/22 워크스페이스 이전 후 404.
-  //    그 사이(8월말~11/2) 제출분은 저장 실패로 유실됐다. 신 DB = 「Season 2 Early Access — 사전 신청자」(User Feedback 아래),
-  //    integration "Maya People Manager" 와 공유 필수 (안 하면 또 500).
+  // User Feedback → Season 2 Early Access — 사전 신청자.
+  // The integration must have access to this database; the previous production
+  // credential returned 401 on 2026-11-02. See the incident report in docs/.
   const DATABASE_ID = "ec0b5179-81ca-8247-8258-018de4f6f76d";
+  const requestId = randomUUID();
+  if (!NOTION_API_KEY) {
+    console.error("subscription_save_failed", { requestId, code: "missing_configuration" });
+    return res.status(503).json({ error: "Subscription temporarily unavailable", requestId });
+  }
 
   try {
     const response = await fetch("https://api.notion.com/v1/pages", {
       method: "POST",
+      signal: AbortSignal.timeout(10000),
       headers: {
         Authorization: `Bearer ${NOTION_API_KEY}`,
         "Content-Type": "application/json",
@@ -72,14 +81,22 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
-      const err = await response.json();
-      console.error("Notion API error:", err);
-      return res.status(500).json({ error: "Failed to save to Notion" });
+      const err = await response.json().catch(() => ({}));
+      // Do not log email addresses, request bodies, tokens, or Notion messages
+      // (validation messages can contain submitted data).
+      const knownCodes = new Set(["unauthorized", "restricted_resource", "object_not_found", "validation_error", "rate_limited", "conflict_error", "internal_server_error", "service_unavailable"]);
+      console.error("subscription_save_failed", {
+        requestId, status: response.status,
+        code: knownCodes.has(err.code) ? err.code : "upstream_error",
+      });
+      return res.status(503).json({ error: "Failed to save subscription", requestId });
     }
 
     return res.status(200).json({ success: true });
   } catch (err) {
-    console.error("Server error:", err);
-    return res.status(500).json({ error: "Server error" });
+    console.error("subscription_save_failed", {
+      requestId, code: err?.name === "TimeoutError" ? "timeout" : "network_error",
+    });
+    return res.status(503).json({ error: "Subscription temporarily unavailable", requestId });
   }
 }
