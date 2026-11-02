@@ -51,4 +51,12 @@ All browser metadata is self-reported; the API repeats the allowlist and consent
 - Browser review covers Korean/English, 390px mobile and desktop, consent settings, no horizontal overflow and truthful form failures. Consent banner sits above the existing support chat button.
 - Production acceptance: wait for both GitHub Pages and Vercel Actions; confirm new JS and privacy page on www; verify no Google/Meta/TikTok request before consent, selected scripts after consent, and a production form record with the new metadata. Account-side report appearance can lag; pixel installation is not proof of an Ads account conversion action.
 
+### Production verification, 2026-11-02
+
+The first deployment exposed a function startup failure after adding a shared ESM import. Declaring `type: module` in the root `package.json` restored GET 405 / OPTIONS 200 / POST 200. Tests now import the actual function entry point instead of rewriting it into a data URL. Deployment CI checks the live endpoint without creating records, with bounded retries for alias propagation.
+
+On the actual www domain: no ad/analytics requests before consent; after Allow all, Google tag and Meta SDK returned 200, GA collection returned 204, Meta PageView returned 200, and the Hub heartbeat returned 204. TikTok made no request because no real pixel exists yet.
+
+A real form submission through the production API stored UTC registration time, campaign source/medium/name, country/region, device/browser, language/timezone, notice version and consent choices in the existing Notion DB. Both custom signup-event calls were observed after the save. The QA harness intercepted those specific conversion calls to avoid reporting a fabricated subscriber to ad platforms; it did not mock the API or Notion. The temporary test record was archived after verification.
+
 References: [Google Consent Mode setup](https://developers.google.com/tag-platform/security/guides/consent), [TikTok pixel creation](https://ads.tiktok.com/resources/help/article/how-to-create-and-access-tiktok-pixel-id?lang=en-GB), [TikTok cookie consent](https://business-api.tiktok.com/portal/docs/pixel-cookie-consent-mode/v1.3).

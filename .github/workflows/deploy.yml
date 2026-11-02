@@ -30,10 +30,15 @@ jobs:
           node --input-type=module <<'JS'
           const url = 'https://diveroid-landing.vercel.app/api/subscribe';
           for (const [method, status] of [['GET', 405], ['OPTIONS', 200]]) {
-            const res = await fetch(url, { method, signal: AbortSignal.timeout(15000) });
-            if (res.status !== status || res.headers.get('access-control-allow-origin') !== '*') {
-              throw new Error(`Subscription runtime check failed: ${method} ${res.status}`);
+            let ready = false, lastStatus;
+            // The production alias can briefly reach the previous deployment.
+            for (let attempt = 0; attempt < 6; attempt++) {
+              const res = await fetch(`${url}?runtime-check=${Date.now()}`, { method, signal: AbortSignal.timeout(15000) });
+              lastStatus = res.status;
+              if (res.status === status && res.headers.get('access-control-allow-origin') === '*') { ready = true; break; }
+              await new Promise(resolve => setTimeout(resolve, 5000));
             }
+            if (!ready) throw new Error(`Subscription runtime check failed: ${method} ${lastStatus}`);
           }
           console.log('Subscription runtime and CORS verified without creating a signup.');
           JS
