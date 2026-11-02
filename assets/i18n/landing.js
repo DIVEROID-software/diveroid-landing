@@ -1,4 +1,4 @@
-/** DIVEROID homepage copy · Updated 2026-10-30. */
+/** DIVEROID homepage copy · Updated 2026-11-02. */
 window.LANDING_CONTENT = {
   "ko": {
     "home": {
@@ -24,7 +24,7 @@ window.LANDING_CONTENT = {
       "emailLabel": "DIVEROID 시즌 2 소식 받기",
       "emailPlaceholder": "이메일 주소",
       "emailButton": "소식 받기 ↗",
-      "emailNote": "입력한 이메일로 DIVEROID의 새 소식을 보내드립니다.",
+      "emailNote": "소식 받기를 누르면 이메일·신청 언어·신청 시각을 저장하고 DIVEROID 소식을 보내는 데 동의합니다. 측정에 동의한 경우 유입·기기·국가 정보도 함께 저장합니다. 언제든 수신을 철회할 수 있습니다.",
       "privacy": "개인정보처리방침",
       "emailPending": "신청 중…",
       "emailSuccess": "신청이 완료되었습니다. 새로운 소식으로 만나요.",
@@ -38,7 +38,23 @@ window.LANDING_CONTENT = {
       "pressTitle": "프레스킷",
       "pressBody": "브랜드 소개와 제품 사진, 보도자료를 확인하세요.",
       "creatorTitle": "크리에이터 협업",
-      "creatorBody": "DIVEROID와 함께할 콘텐츠 협업을 알아보세요."
+      "creatorBody": "DIVEROID와 함께할 콘텐츠 협업을 알아보세요.",
+      "websitePrivacy": "웹사이트 개인정보 안내",
+      "consentSettings": "쿠키·측정 설정",
+      "consentTitle": "방문·광고 측정을 허용할까요?",
+      "consentBody": "동의하면 Google로 사이트 이용을 분석하고 Meta·TikTok으로 광고 효과를 측정합니다. 유입·캠페인·기기·국가 정보는 이메일 신청과 함께 저장될 수 있습니다. 거부해도 신청할 수 있습니다.",
+      "consentAllow": "모두 허용",
+      "consentDecline": "필수 항목만",
+      "consentChoose": "직접 선택",
+      "close": "닫기",
+      "consentNecessary": "언어·동의 선택과 이메일 신청에 필요한 정보는 서비스 제공에 사용합니다.",
+      "consentAnalytics": "방문 분석 (선택)",
+      "consentAnalyticsBody": "Google Analytics 및 접속자 집계. 유입 경로·캠페인·기기·국가 정보와 신청 분석.",
+      "consentAds": "광고 측정 (선택)",
+      "consentAdsBody": "Meta·TikTok 태그, 광고 클릭 식별자 및 광고 성과 측정. 이메일 자체는 광고 플랫폼에 보내지 않습니다.",
+      "consentBrowserChoice": "브라우저의 추적 거부 설정에 따라 선택 측정을 사용하지 않습니다.",
+      "consentChangeNote": "언제든 변경할 수 있습니다. 이미 실행된 태그를 중지하기 위해 설정 변경 시 페이지가 새로고침될 수 있습니다.",
+      "consentSave": "선택 저장"
     },
     "footer": {
       "brand": "오션윅 주식회사 (Oceanwick Inc.) — DIVEROID 브랜드 운영사",
@@ -72,7 +88,7 @@ window.LANDING_CONTENT = {
       "emailLabel": "Stay in the loop with DIVEROID Season 2",
       "emailPlaceholder": "Your email address",
       "emailButton": "Keep me posted ↗",
-      "emailNote": "We’ll send DIVEROID updates to your email.",
+      "emailNote": "By selecting Keep me posted, you agree to storing your email, signup language and time, and receiving DIVEROID updates. With measurement consent, we also save attribution, device and country information. You can unsubscribe at any time.",
       "privacy": "Privacy policy",
       "emailPending": "Submitting…",
       "emailSuccess": "You’re on the list. We’ll be in touch with what’s next.",
@@ -86,7 +102,23 @@ window.LANDING_CONTENT = {
       "pressTitle": "Press kit",
       "pressBody": "Find brand information, product imagery and press releases.",
       "creatorTitle": "Creator partnerships",
-      "creatorBody": "Explore ways to create with DIVEROID."
+      "creatorBody": "Explore ways to create with DIVEROID.",
+      "websitePrivacy": "Website privacy notice",
+      "consentSettings": "Cookie & measurement settings",
+      "consentTitle": "Allow visit and advertising measurement?",
+      "consentBody": "With your consent, Google analyzes site usage and Meta and TikTok measure advertising performance. Referral, campaign, device and country information may be saved with your email signup. You can still sign up if you decline.",
+      "consentAllow": "Allow all",
+      "consentDecline": "Essential only",
+      "consentChoose": "Choose",
+      "close": "Close",
+      "consentNecessary": "Language, consent preferences and signup information are used to provide this service.",
+      "consentAnalytics": "Visit analytics (optional)",
+      "consentAnalyticsBody": "Google Analytics and active visitor counts. Analysis of referrals, campaigns, devices, countries and signups.",
+      "consentAds": "Advertising measurement (optional)",
+      "consentAdsBody": "Meta and TikTok tags, ad click identifiers and campaign measurement. Your email address is not sent to advertising platforms.",
+      "consentBrowserChoice": "Your browser’s tracking preference disables optional measurement.",
+      "consentChangeNote": "You can change these choices at any time. Changing settings may reload this page to stop tags that have already loaded.",
+      "consentSave": "Save choices"
     },
     "footer": {
       "brand": "Oceanwick Inc. — operator of the DIVEROID brand",

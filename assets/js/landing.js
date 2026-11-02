@@ -80,11 +80,13 @@
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 15000);
     try {
+      let metadata = { signupNoticeVersion: "2026-11-02" };
+      try { metadata = window.DIVEROID_MEASUREMENT?.metadata() || metadata; } catch {}
       // www.diveroid.com serves static pages; subscriptions run on Vercel.
       const response = await fetch("https://diveroid-landing.vercel.app/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, lang }),
+        body: JSON.stringify({ email, lang, metadata }),
         signal: controller.signal,
       });
       if (!response.ok) throw new Error("Subscription failed");
@@ -92,6 +94,8 @@
       if (result.success !== true) throw new Error("Subscription not confirmed");
       submissionState = "success";
       input.value = "";
+      // Analytics must never turn a successful signup into a visible failure.
+      try { window.DIVEROID_MEASUREMENT?.signupSaved(result.eventId); } catch {}
     } catch {
       submissionState = "error";
     } finally {

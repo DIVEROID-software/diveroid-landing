@@ -47,13 +47,14 @@ export function startSitePresence({ site, allowed = () => true, endpoint = "http
   // Presence writes are shared by tabs. Reacting to those writes would cause
   // an endless storage-event/heartbeat loop between two open tabs.
   const storageChanged = (event) => {
-    if (event.key === null || event.key === "watchdive.measurement-consent.v3") update();
+    if (event.key === null || event.key === "watchdive.measurement-consent.v3" || event.key === "diveroid.measurement-consent.v1") update();
   };
   env.document.addEventListener("visibilitychange", update);
   env.addEventListener("pagehide", pagehide);
   env.addEventListener("pageshow", update);
   env.addEventListener("storage", storageChanged);
   env.addEventListener("watchdive:optional-measurement-consent-changed", update);
+  env.addEventListener("diveroid:measurement-consent-changed", update);
   const timer = env.setInterval(update, 20000);
   update();
   return () => {
@@ -63,5 +64,6 @@ export function startSitePresence({ site, allowed = () => true, endpoint = "http
     env.removeEventListener("pageshow", update);
     env.removeEventListener("storage", storageChanged);
     env.removeEventListener("watchdive:optional-measurement-consent-changed", update);
+    env.removeEventListener("diveroid:measurement-consent-changed", update);
   };
 }

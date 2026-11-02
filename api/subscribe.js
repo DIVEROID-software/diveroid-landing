@@ -19,6 +19,7 @@
  *   저장 DB: ec0b5179-81ca-8247-8258-018de4f6f76d
  */
 import { randomUUID } from "node:crypto";
+import { notionMetadata } from "../assets/js/measurement-core.mjs";
 
 export default async function handler(req, res) {
   // CORS
@@ -31,7 +32,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { email: input, lang } = req.body ?? {};
+  const { email: input, lang, metadata } = req.body ?? {};
   const email = typeof input === "string" ? input.trim() : "";
 
   if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -65,7 +66,7 @@ export default async function handler(req, res) {
             title: [{ text: { content: email } }],
           },
           "Registered At": {
-            date: { start: new Date().toISOString().split("T")[0] },
+            date: { start: new Date().toISOString() },
           },
           Language: {
             select: { name: lang === "en" ? "EN" : "KO" },
@@ -76,6 +77,8 @@ export default async function handler(req, res) {
           Status: {
             select: { name: "New" },
           },
+          "Signup ID": { rich_text: [{ text: { content: requestId } }] },
+          ...notionMetadata(metadata, req.headers),
         },
       }),
     });
@@ -92,7 +95,7 @@ export default async function handler(req, res) {
       return res.status(503).json({ error: "Failed to save subscription", requestId });
     }
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, eventId: requestId });
   } catch (err) {
     console.error("subscription_save_failed", {
       requestId, code: err?.name === "TimeoutError" ? "timeout" : "network_error",
