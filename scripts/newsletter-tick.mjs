@@ -1,6 +1,6 @@
 import {createHash} from 'node:crypto';
 import {notion,queryPages,updatePage,emailOf,richText} from '../lib/subscriptions.mjs';
-import {CAMPAIGN,P,DAILY_LIMIT,END,scheduledTime,planRows,readState,exclusion,renderMessage,resend,suppressedEmails,cancelScheduled,recordEvent,metrics,dateProp,dateOf,textOf,hashEmail} from '../lib/newsletter.mjs';
+import {CAMPAIGN,P,DAILY_LIMIT,END,scheduledTime,planRows,readState,exclusion,renderMessage,resend,suppressedEmails,cancelScheduled,recordEvent,metrics,dateProp,dateOf,textOf,hashEmail,languageFor} from '../lib/newsletter.mjs';
 
 const apply=process.argv.includes('--apply');
 const now=new Date();
@@ -28,7 +28,7 @@ let allowance=Math.max(0,Math.min(DAILY_LIMIT-submissionsToday,(usage.emails?.da
 
 for(const initial of stateRows){
   let row=await notion(`pages/${initial.id}`);let state=readState(row);
-  const why=blocked.has(emailOf(row))?'동일 이메일 수신 거부 또는 보류':exclusion(row,suppressed);
+  const why=blocked.has(emailOf(row))?'동일 이메일 수신 거부 또는 보류':exclusion(row,suppressed)||(state.language!==languageFor(textOf(row,'Country'))?'예약 후 국가 변경 — 발송 언어 확인 필요':null);
   if(why||state.emailHash!==hashEmail(emailOf(row))){
     if(textOf(row,P.id)&&!dateOf(row,P.sent)&&!dateOf(row,P.canceled)){try{await cancelScheduled(row);counts.canceled++;}catch{counts.failures++;}}
     else if(!textOf(row,P.id)&&!dateOf(row,P.canceled))await updatePage(row.id,{[P.canceled]:dateProp(new Date().toISOString())});
@@ -82,9 +82,5 @@ for(const initial of stateRows){
   await sleep();
 }
 const fresh=await queryPages(undefined,100000);const report=metrics(fresh);
-if(process.env.NEWSLETTER_REPORT_BLOCK){
-  const text=`WatchDive 소개 메일 · ${new Date().toISOString()} UTC 기준\n대상 ${report.total}명 (한글 ${report.ko} / 영문 ${report.en})\n예약 완료 ${report.scheduled} · 예약 대기 ${report.queued} · 발송 ${report.sent} · 전달 ${report.delivered}\n고유 열람 ${report.uniqueOpened} · 오픈율 ${report.openRate===null?'아직 전달 없음':(report.openRate*100).toFixed(1)+'%'}\n실패 ${report.failed} · 취소 ${report.canceled}\n오픈율 = 전달된 메일 중 1회 이상 이미지가 로드된 수신자 / 전달 완료 수신자. 이미지 차단·자동 로딩으로 실제 읽음과 다를 수 있습니다. 테스트 주소는 캠페인 대상에 포함하지 않습니다.`;
-  await notion(`blocks/${process.env.NEWSLETTER_REPORT_BLOCK}`,{method:'PATCH',body:{paragraph:{rich_text:[{type:'text',text:{content:text}}]}}});
-}
 console.log(JSON.stringify({...counts,report}));
 if(counts.failures)process.exitCode=1;
