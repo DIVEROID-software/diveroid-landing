@@ -30,6 +30,13 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           REOON_API_KEY: ${{ secrets.REOON_API_KEY }}
         run: node scripts/configure-reoon.mjs
+      - name: Configure newsletter delivery and tracking
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          NEWSLETTER_RESEND_API_KEY: ${{ secrets.NEWSLETTER_RESEND_API_KEY }}
+          NEWSLETTER_TOKEN_SECRET: ${{ secrets.NEWSLETTER_TOKEN_SECRET }}
+          NEWSLETTER_WEBHOOK_SECRET: ${{ secrets.NEWSLETTER_WEBHOOK_SECRET }}
+        run: node scripts/configure-newsletter.mjs
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
       - name: Deploy (production)

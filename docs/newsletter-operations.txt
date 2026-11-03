@@ -1,0 +1,69 @@
+WatchDive introduction campaign — enabled by user request on 2026-11-03
+
+Audience: Season 2 Notion database ec0b5179-81ca-8247-8258-018de4f6f76d.
+Country KR -> Korean. Every other or blank Country -> English. Language field
+does not override this rule. Only Reoon safe and Status New/Notified are eligible.
+Hold, Unsubscribed, archived, malformed and Resend-suppressed addresses are held.
+Duplicate unsubscribe/hold applies to the normalized email identity.
+
+Delivery: DIVEROID <help@diveroid.com>, same Reply-To. Reviewed 2026-11-03 copy
+with a delivery/open measurement notice and a recipient-specific opt-out.
+First planned day 2026-11-04. Korean 01:00 UTC / 10:00 KST; English 13:00 UTC /
+22:00 KST. Unknown country does not support a truthful local-time estimate.
+Maximum 40 messages per UTC delivery day, and 40 new provider submissions per
+UTC day, preserving at least 30 remaining daily and 100 monthly account slots
+at the time of scheduling. Other services share the account and can still
+consume that headroom later. No plan upgrade or automatic purchase is enabled.
+
+Recurring GitHub Actions workflow newsletter.yml runs every 15 minutes, with
+serialized concurrency. It plans new safe subscribers, cancels pending messages
+for newly held/unsubscribed contacts, and schedules through Resend up to 36h
+ahead. Resend executes accepted reservations without this laptop being awake.
+GitHub scheduled jobs can be delayed. Never-attempted expired plans move to the
+next readable slot; ambiguous sends are held for review, not sent immediately.
+The dated pre-launch copy is not scheduled past 2026-11-30. Confirm launch timing
+and update the campaign for December. Already accepted reservations must be
+canceled through Resend if this campaign is withdrawn.
+
+Enable/disable new planning and scheduling with GitHub repository variable
+NEWSLETTER_ENABLED=true/false. Disabling the runner alone does NOT cancel
+provider reservations. Status=Unsubscribed or Hold is noticed at the next run;
+an email's own POST unsubscribe immediately updates the DB and cancels its
+pending provider reservation. A GET link visit only shows confirmation, so a
+mail scanner does not opt a person out. The token includes recipient hash,
+page ID and purpose, authenticated with HMAC. Never rotate its secret casually:
+existing delivered unsubscribe links depend on it.
+
+Notion WatchDive 발송 is a formula over independent event fields, so concurrent
+receipt/open updates cannot downgrade a terminal status. Delivery and send
+events come from a Svix-verified webhook. Missing final provider receipts are
+reconciled by the runner; recovered timestamps represent reconciliation time.
+First image load is tracked only for this campaign, with no raw IP/user-agent
+stored in Notion. Resend domain-wide tracking remains unchanged/off.
+Open rate view filters to delivered records and averages 0/100 first-load flags:
+unique recipients with an image load / delivered recipients. Image proxies,
+Apple Mail privacy loading, scanners and disabled images make this an estimate.
+Repeated loads do not increase the numerator. No open-based resend is enabled.
+
+Notion views:
+Status: 40db5179-81ca-81f6-bc07-000c60be7d08
+Open rate (%): 40db5179-81ca-8148-bb9c-000cd1830012
+
+Durable dedupe: campaign ID + Notion page ID in provider idempotency key, plus
+normalized-email dedupe across Notion rows. The immutable payload is hashed and
+claimed before POST; timeout/5xx replays use the original payload/key for at
+most 23h. Unknown older results are never automatically re-sent. Provider keys
+last 24h. Notion is not an atomic transactional queue: run only the serialized
+workflow; do not concurrently execute --apply elsewhere. Do not clear internal
+message IDs, campaign state or timestamp fields to retry a send.
+
+Secrets: NEWSLETTER_RESEND_API_KEY, NEWSLETTER_TOKEN_SECRET,
+NEWSLETTER_WEBHOOK_SECRET are GitHub Actions secrets and encrypted Vercel
+production environment values. NOTION_API_KEY is the existing integration.
+Secrets, email lists, tokens and private QA receipts must never be committed.
+
+Dry run: node scripts/newsletter-tick.mjs
+Apply: NEWSLETTER_ENABLED=true node scripts/newsletter-tick.mjs --apply
+Use workflow_dispatch for production to preserve concurrency.
+Validation: npm test, node --check scripts/newsletter-tick.mjs, production
+signed/unsigned webhook, opt-out, pixel and schedule/cancel QA before activation.

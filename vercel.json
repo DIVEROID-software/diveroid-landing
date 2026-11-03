@@ -1,6 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "api/subscribe.js": { "maxDuration": 180 }
+    "api/subscribe.js": { "maxDuration": 180 },
+    "api/newsletter.js": { "maxDuration": 120 },
+    "api/newsletter-webhook.js": { "maxDuration": 120 }
   }
 }

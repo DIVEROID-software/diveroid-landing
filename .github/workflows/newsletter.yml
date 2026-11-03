@@ -1,0 +1,27 @@
+name: WatchDive newsletter scheduling and delivery report
+on:
+  schedule:
+    - cron: '3,18,33,48 * * * *'
+  workflow_dispatch: {}
+permissions:
+  contents: read
+concurrency:
+  group: watchdive-newsletter
+  cancel-in-progress: false
+jobs:
+  newsletter:
+    if: vars.NEWSLETTER_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/newsletter-tick.mjs --apply
+        env:
+          NEWSLETTER_ENABLED: 'true'
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NEWSLETTER_RESEND_API_KEY: ${{ secrets.NEWSLETTER_RESEND_API_KEY }}
+          NEWSLETTER_TOKEN_SECRET: ${{ secrets.NEWSLETTER_TOKEN_SECRET }}
+          NEWSLETTER_REPORT_BLOCK: ${{ vars.NEWSLETTER_REPORT_BLOCK }}

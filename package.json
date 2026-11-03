@@ -6,6 +6,7 @@
     "test": "node --test test/*.test.mjs"
   },
   "dependencies": {
-    "@vercel/functions": "3.6.1"
+    "@vercel/functions": "3.6.1",
+    "svix": "2.9.1"
   }
 }
