@@ -2,7 +2,13 @@ name: WatchDive newsletter scheduling and delivery report
 on:
   schedule:
     - cron: '3,18,33,48 * * * *'
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Apply the existing queue or inspect account usage only
+        type: choice
+        options: [apply, usage]
+        default: apply
 permissions:
   contents: read
 concurrency:
@@ -18,9 +24,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node scripts/newsletter-tick.mjs --apply
+      - run: |
+          if [ "$NEWSLETTER_MODE" = "usage" ]; then
+            node scripts/newsletter-tick.mjs --usage-only
+          else
+            node scripts/newsletter-tick.mjs --apply
+          fi
         env:
           NEWSLETTER_ENABLED: 'true'
+          NEWSLETTER_MODE: ${{ inputs.mode || 'apply' }}
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           NEWSLETTER_RESEND_API_KEY: ${{ secrets.NEWSLETTER_RESEND_API_KEY }}
           NEWSLETTER_TOKEN_SECRET: ${{ secrets.NEWSLETTER_TOKEN_SECRET }}

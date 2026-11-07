@@ -10,7 +10,7 @@ Delivery: DIVEROID <help@diveroid.com>, same Reply-To. Reviewed 2026-11-03 copy
 with a delivery/open measurement notice and a recipient-specific opt-out.
 First planned day 2026-11-04. Korean 01:00 UTC / 10:00 KST; English 13:00 UTC /
 22:00 KST. Unknown country does not support a truthful local-time estimate.
-Maximum 40 messages per UTC delivery day, and 40 new provider submissions per
+Maximum 100 messages per UTC delivery day, and 100 new provider submissions per
 UTC day, preserving at least 30 remaining daily and 100 monthly account slots
 at the time of scheduling. Other services share the account and can still
 consume that headroom later. No plan upgrade or automatic purchase is enabled.
@@ -67,3 +67,7 @@ Apply: NEWSLETTER_ENABLED=true node scripts/newsletter-tick.mjs --apply
 Use workflow_dispatch for production to preserve concurrency.
 Validation: npm test, node --check scripts/newsletter-tick.mjs, production
 signed/unsigned webhook, opt-out, pixel and schedule/cancel QA before activation.
+
+2026-11-07: Owner raised the campaign ceiling to 100 per day (KO and EN combined).
+The shared-provider headroom still applies; this does not upgrade a paid plan.
+Workflow dispatch mode=usage reads aggregate account limits without sending.

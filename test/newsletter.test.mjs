@@ -14,11 +14,11 @@ test('pending, risky, unsubscribed, held, archived and provider suppressions can
   for(const s of ['pending','unknown','invalid','error','disposable','spamtrap','catch_all','role_account']){const r=row();r.properties['Reoon Status'].select.name=s;assert.ok(exclusion(r));}
   assert.ok(exclusion({...row(),archived:true}));assert.ok(exclusion(row(),new Set(['subscriber1@example.com'])));
 });
-test('112 recipients start tomorrow in their language time slots with a 40/day ceiling',()=>{
+test('112 recipients start tomorrow in their language time slots with a 100/day ceiling',()=>{
   const rows=Array.from({length:112},(_,i)=>row(i+1,i<86?'KR':''));const p=planRows(rows,new Date('2026-11-03T11:00:00Z'));
   assert.equal(p.plans.length,112);const counts={};
   for(const {state:s} of p.plans){assert.equal(s.at.slice(11,13),s.language==='ko'?'01':'13');assert.ok(s.at>='2026-11-04');counts[s.at.slice(0,10)]=(counts[s.at.slice(0,10)]||0)+1;}
-  assert.deepEqual(Object.values(counts),[40,40,32]);
+  assert.deepEqual(Object.values(counts),[100,12]);
 });
 test('existing reservations and duplicate opt-outs prevent repeat admission',()=>{
   const a=row(),b=row(2);b.properties.Email=a.properties.Email;b.properties.Status.select.name='Unsubscribed';assert.equal(planRows([a,b],new Date('2026-11-03')).plans.length,0);

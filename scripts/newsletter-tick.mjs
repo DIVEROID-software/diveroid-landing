@@ -4,6 +4,11 @@ import {CAMPAIGN,P,DAILY_LIMIT,END,scheduledTime,planRows,readState,exclusion,re
 
 const apply=process.argv.includes('--apply');
 const now=new Date();
+if(process.argv.includes('--usage-only')){
+  const usage=await resend('usage');
+  console.log(JSON.stringify({mode:'usage',dailyLimit:DAILY_LIMIT,emails:usage.emails}));
+  process.exit(0);
+}
 const rows=await queryPages(undefined,100000);
 const suppressed=await suppressedEmails();
 const plan=planRows(rows,now,suppressed);
@@ -25,6 +30,7 @@ let submissionsToday=stateRows.filter(r=>(readState(r).submittedAt||(textOf(r,P.
 const usage=await resend('usage');
 // Preserve headroom for the existing verification and reservation mail flows.
 let allowance=Math.max(0,Math.min(DAILY_LIMIT-submissionsToday,(usage.emails?.daily?.limit??0)-(usage.emails?.daily?.used??0)-30,(usage.emails?.monthly?.limit??0)-(usage.emails?.monthly?.used??0)-100));
+counts.quota={dailyLimit:DAILY_LIMIT,emails:usage.emails,submissionsToday,allowance};
 
 for(const initial of stateRows){
   let row=await notion(`pages/${initial.id}`);let state=readState(row);
