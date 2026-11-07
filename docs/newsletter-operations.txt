@@ -71,3 +71,7 @@ signed/unsigned webhook, opt-out, pixel and schedule/cancel QA before activation
 2026-11-07: Owner raised the campaign ceiling to 100 per day (KO and EN combined).
 The shared-provider headroom still applies; this does not upgrade a paid plan.
 Workflow dispatch mode=usage reads aggregate account limits without sending.
+Never-attempted plans may advance to earlier available language slots when
+quota permits. Existing provider reservations and ambiguous requests retain
+their IDs, times and immutable payloads; no cancel/re-send is used to accelerate.
+The runner reports aggregate account quota and pending delivery-day counts.

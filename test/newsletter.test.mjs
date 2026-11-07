@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {Readable} from 'node:stream';
 import {Webhook} from 'svix';
-import {CAMPAIGN,P,languageFor,planRows,tokenFor,verifyToken,renderMessage,metrics,exclusion,hashEmail} from '../lib/newsletter.mjs';
+import {CAMPAIGN,P,languageFor,planRows,tokenFor,verifyToken,renderMessage,metrics,exclusion,hashEmail,earlierUnattemptedSlot,submissionAllowance,pendingSchedule} from '../lib/newsletter.mjs';
 import handler from '../api/newsletter-webhook.js';
 import {DATABASE_ID,richText} from '../lib/subscriptions.mjs';
 
@@ -49,4 +49,26 @@ test('webhook rejects unsigned/tampered requests and accepts signed irrelevant e
   let req=Readable.from([body]);req.method='POST';req.headers={};let res=response();await handler(req,res);assert.equal(res.code,400);
   const timestamp=new Date();const sig=new Webhook(process.env.NEWSLETTER_WEBHOOK_SECRET).sign('msg_test',timestamp,body);
   req=Readable.from([body]);req.method='POST';req.headers={'svix-id':'msg_test','svix-timestamp':String(Math.floor(timestamp.getTime()/1000)),'svix-signature':sig};res=response();await handler(req,res);assert.equal(res.code,200);
+});
+
+test('higher daily volume advances only never-attempted plans into free language slots',()=>{
+  const now=new Date('2026-11-07T08:00:00Z'),s={phase:'planned',language:'en',at:'2026-11-09T13:00:00.000Z'};
+  assert.equal(earlierUnattemptedSlot(s,new Map([['2026-11-07',40]]),now,5),'2026-11-07T13:00:00.000Z');
+  assert.equal(earlierUnattemptedSlot(s,new Map([['2026-11-07',100]]),now,5),'2026-11-08T13:00:00.000Z');
+  assert.equal(earlierUnattemptedSlot({...s,language:'ko'},new Map(),now,5),'2026-11-08T01:00:00.000Z');
+  for(const locked of [{...s,attemptAt:now.toISOString()},{...s,phase:'submitting'},{...s,phase:'manual_review'}])assert.equal(earlierUnattemptedSlot(locked,new Map(),now,5),null);
+  assert.equal(earlierUnattemptedSlot(s,new Map(),now,0),null);
+});
+test('campaign ceiling preserves shared daily/monthly quota and handles unlimited plans',()=>{
+  const usage={emails:{daily:{used:65,limit:100},monthly:{used:1089,limit:3000}}};
+  assert.equal(submissionAllowance(usage,40),5);
+  assert.equal(submissionAllowance({emails:{daily:{used:0,limit:null},monthly:{used:0,limit:50000}}},0),100);
+  assert.equal(submissionAllowance({emails:{daily:{used:71,limit:100},monthly:{used:0,limit:3000}}},0),0);
+  assert.equal(submissionAllowance({emails:{daily:{used:0,limit:100},monthly:{used:2900,limit:3000}}},0),0);
+  assert.equal(submissionAllowance({},0),0);assert.equal(submissionAllowance(usage,100),0);
+});
+test('pending schedule separates provider reservations from Notion-only plans and excludes terminal rows',()=>{
+  const rows=Array.from({length:4},(_,i)=>row(i+1,'US',{campaign:CAMPAIGN,language:'en',at:'2026-11-07T13:00:00.000Z'}));
+  rows[0].properties[P.id]=richText('existing-provider-id');rows[2].properties[P.sent]={date:{start:'2026-11-07T13:00:00Z'}};rows[3].properties[P.failure]=richText('bounced');
+  assert.deepEqual(pendingSchedule(rows),{'2026-11-07T13:00:00.000Z':{language:'en',providerScheduled:1,planned:1}});
 });

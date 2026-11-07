@@ -1,6 +1,6 @@
 import {createHash} from 'node:crypto';
 import {notion,queryPages,updatePage,emailOf,richText} from '../lib/subscriptions.mjs';
-import {CAMPAIGN,P,DAILY_LIMIT,END,scheduledTime,planRows,readState,exclusion,renderMessage,resend,suppressedEmails,cancelScheduled,recordEvent,metrics,dateProp,dateOf,textOf,hashEmail,languageFor} from '../lib/newsletter.mjs';
+import {CAMPAIGN,P,DAILY_LIMIT,END,scheduledTime,planRows,readState,exclusion,renderMessage,resend,suppressedEmails,cancelScheduled,recordEvent,metrics,dateProp,dateOf,textOf,hashEmail,languageFor,earlierUnattemptedSlot,submissionAllowance,pendingSchedule} from '../lib/newsletter.mjs';
 
 const apply=process.argv.includes('--apply');
 const now=new Date();
@@ -12,7 +12,7 @@ if(process.argv.includes('--usage-only')){
 const rows=await queryPages(undefined,100000);
 const suppressed=await suppressedEmails();
 const plan=planRows(rows,now,suppressed);
-const counts={mode:apply?'apply':'dry-run',rows:rows.length,newPlans:plan.plans.length,excluded:plan.excluded.size,scheduled:0,canceled:0,reconciled:0,held:0,failures:0};
+const counts={mode:apply?'apply':'dry-run',rows:rows.length,newPlans:plan.plans.length,excluded:plan.excluded.size,scheduled:0,canceled:0,reconciled:0,advanced:0,held:0,failures:0};
 if(!apply){console.log(JSON.stringify({...counts,byDay:plan.plans.reduce((a,x)=>{const k=x.state.at;a[k]=(a[k]||0)+1;return a;},{}),current:metrics(rows)}));process.exit(0);}
 if(process.env.NEWSLETTER_ENABLED!=='true')throw new Error('newsletter_disabled');
 const sleep=()=>new Promise(r=>setTimeout(r,350));
@@ -29,7 +29,7 @@ const today=now.toISOString().slice(0,10);
 let submissionsToday=stateRows.filter(r=>(readState(r).submittedAt||(textOf(r,P.id)?readState(r).attemptAt:''))?.startsWith(today)).length;
 const usage=await resend('usage');
 // Preserve headroom for the existing verification and reservation mail flows.
-let allowance=Math.max(0,Math.min(DAILY_LIMIT-submissionsToday,(usage.emails?.daily?.limit??0)-(usage.emails?.daily?.used??0)-30,(usage.emails?.monthly?.limit??0)-(usage.emails?.monthly?.used??0)-100));
+let allowance=submissionAllowance(usage,submissionsToday);
 counts.quota={dailyLimit:DAILY_LIMIT,emails:usage.emails,submissionsToday,allowance};
 
 for(const initial of stateRows){
@@ -53,6 +53,12 @@ for(const initial of stateRows){
     await sleep();continue;
   }
   if(textOf(row,P.failure)||state.phase==='manual_review'){counts.held++;continue;}
+  const earlier=earlierUnattemptedSlot(state,dailySlots,new Date(),allowance);
+  if(earlier){
+    dailySlots.set(state.at.slice(0,10),Math.max(0,(dailySlots.get(state.at.slice(0,10))||0)-1));dailySlots.set(earlier.slice(0,10),(dailySlots.get(earlier.slice(0,10))||0)+1);
+    state={...state,originalAt:state.originalAt||state.at,at:earlier};
+    await updatePage(row.id,{[P.data]:richText(JSON.stringify(state)),[P.plan]:dateProp(state.at)});counts.advanced++;
+  }
   if(Date.parse(state.at)<Date.now()+600000){
     if(state.attemptAt){await updatePage(row.id,{[P.failure]:richText('예약 시간 경과 — 이전 요청 결과 확인 필요')});counts.held++;continue;}
     // A never-attempted or definitively rejected send may move to the next
@@ -88,5 +94,5 @@ for(const initial of stateRows){
   await sleep();
 }
 const fresh=await queryPages(undefined,100000);const report=metrics(fresh);
-console.log(JSON.stringify({...counts,report}));
+console.log(JSON.stringify({...counts,report,pendingSchedule:pendingSchedule(fresh)}));
 if(counts.failures)process.exitCode=1;
