@@ -10,7 +10,7 @@ Delivery: DIVEROID <help@diveroid.com>, same Reply-To. Reviewed 2026-11-03 copy
 with a delivery/open measurement notice and a recipient-specific opt-out.
 First planned day 2026-11-04. Korean 01:00 UTC / 10:00 KST; English 13:00 UTC /
 22:00 KST. Unknown country does not support a truthful local-time estimate.
-Maximum 100 messages per UTC delivery day, and 100 new provider submissions per
+Maximum 50 messages per UTC delivery day, and 50 new provider submissions per
 UTC day, preserving at least 30 remaining daily and 100 monthly account slots
 at the time of scheduling. Other services share the account and can still
 consume that headroom later. No plan upgrade or automatic purchase is enabled.
@@ -75,3 +75,7 @@ Never-attempted plans may advance to earlier available language slots when
 quota permits. Existing provider reservations and ambiguous requests retain
 their IDs, times and immutable payloads; no cancel/re-send is used to accelerate.
 The runner reports aggregate account quota and pending delivery-day counts.
+
+2026-11-07: Owner superseded the 100/day request with 50/day for now.
+The ceiling combines Korean and English; the shared account quota guards and
+existing authentication-mail headroom remain in force. No paid upgrade.
