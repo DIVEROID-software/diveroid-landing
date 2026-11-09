@@ -109,3 +109,7 @@ test('one-off grant is bound to the email identity and cannot be transferred by 
  await runDaily(h.io,{apply:true,now,authorizeOneOff:true});h.rows[0].properties.Email.title[0].text.content='changed@example.com';h.io.resend=provider;
  await runDaily(h.io,{apply:true,now});assert.equal(h.posts.length,0);
 });
+test('safe signups after the cutoff remain normal recipients and receive no exception grant',async()=>{
+ const r=row();r.created_time='2026-11-09T07:00:00Z';const h=harness([r]);
+ const result=await runDaily(h.io,{apply:true,now,authorizeOneOff:true});assert.equal(result.oneOffEnrollment,0);assert.equal(result.newAccepted,1);assert.equal(readState(h.rows[0]).oneOffAuthorization,undefined);
+});
