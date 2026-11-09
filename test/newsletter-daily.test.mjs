@@ -66,8 +66,12 @@ test('uncertain send preserves its claim; a subsequent run cannot issue a second
 test('a definitive 429 can return to the queue without claiming delivery',async()=>{
  const h=harness([row()],{sendError:{status:429}});await runDaily(h.io,{apply:true,now});assert.equal(readState(h.rows[0]).phase,'planned');assert.equal(readState(h.rows[0]).attemptAt,undefined);assert.equal(dateOf(h.rows[0],P.sent),undefined);
 });
-test('50/day ceiling holds across repeats; a later day picks up the remainder including late-safe signups',async()=>{
- const h=harness(Array.from({length:51},(_,i)=>row(i+1)));let r=await runDaily(h.io,{apply:true,now});assert.equal(r.newAccepted,50);assert.equal(r.remainingEligible,1);r=await runDaily(h.io,{apply:true,now});assert.equal(r.newAccepted,0);assert.equal(h.posts.length,50);r=await runDaily(h.io,{apply:true,now:new Date(now.getTime()+86400000)});assert.equal(r.newAccepted,1);assert.equal(r.remainingEligible,0);
+test('more than 50 eligible recipients can send on one day while repeats still cannot resend',async()=>{
+ const h=harness(Array.from({length:112},(_,i)=>row(i+1)));let r=await runDaily(h.io,{apply:true,now});assert.equal(r.newAccepted,112);assert.equal(r.remainingEligible,0);assert.equal(r.quota.campaignDailyLimit,null);assert.equal(r.quota.campaignLimitPolicy,'unlimited');r=await runDaily(h.io,{apply:true,now});assert.equal(r.newAccepted,0);assert.equal(h.posts.length,112);
+});
+test('removing the campaign cap never bypasses provider quota or verification-mail headroom',async()=>{
+ const h=harness(Array.from({length:6},(_,i)=>row(i+1))),provider=h.io.resend;h.io.resend=async(path,...args)=>path==='usage'?{emails:{daily:{used:65,limit:100},monthly:{used:1000,limit:3000}}}:provider(path,...args);
+ const r=await runDaily(h.io,{apply:true,now});assert.equal(r.newAccepted,5);assert.equal(r.remainingEligible,1);assert.equal(r.quota.allowance,5);
 });
 test('blocked old reservations are canceled while the opt-out state and cancel marker remain',async()=>{
  const r=row(),old=scheduled(r);r.properties.Status.select.name='Unsubscribed';const h=harness([r],{mails:[old]});await runDaily(h.io,{apply:true,now});assert.equal(h.posts.length,0);assert.ok(dateOf(h.rows[0],P.canceled));assert.equal(h.rows[0].properties.Status.select.name,'Unsubscribed');

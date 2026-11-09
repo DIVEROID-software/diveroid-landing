@@ -14,11 +14,11 @@ test('pending, risky, unsubscribed, held, archived and provider suppressions can
   for(const s of ['pending','unknown','invalid','error','disposable','spamtrap','catch_all','role_account']){const r=row();r.properties['Reoon Status'].select.name=s;assert.ok(exclusion(r));}
   assert.ok(exclusion({...row(),archived:true}));assert.ok(exclusion(row(),new Set(['subscriber1@example.com'])));
 });
-test('112 recipients start tomorrow in their language time slots with a 50/day ceiling',()=>{
+test('112 recipients retain language slots without a campaign daily ceiling',()=>{
   const rows=Array.from({length:112},(_,i)=>row(i+1,i<86?'KR':''));const p=planRows(rows,new Date('2026-11-03T11:00:00Z'));
   assert.equal(p.plans.length,112);const counts={};
   for(const {state:s} of p.plans){assert.equal(s.at.slice(11,13),s.language==='ko'?'01':'13');assert.ok(s.at>='2026-11-04');counts[s.at.slice(0,10)]=(counts[s.at.slice(0,10)]||0)+1;}
-  assert.deepEqual(Object.values(counts),[50,50,12]);
+  assert.deepEqual(Object.values(counts),[112]);
 });
 test('existing reservations and duplicate opt-outs prevent repeat admission',()=>{
   const a=row(),b=row(2);b.properties.Email=a.properties.Email;b.properties.Status.select.name='Unsubscribed';assert.equal(planRows([a,b],new Date('2026-11-03')).plans.length,0);
@@ -54,7 +54,7 @@ test('webhook rejects unsigned/tampered requests and accepts signed irrelevant e
 test('higher daily volume advances only never-attempted plans into free language slots',()=>{
   const now=new Date('2026-11-07T08:00:00Z'),s={phase:'planned',language:'en',at:'2026-11-09T13:00:00.000Z'};
   assert.equal(earlierUnattemptedSlot(s,new Map([['2026-11-07',40]]),now,5),'2026-11-07T13:00:00.000Z');
-  assert.equal(earlierUnattemptedSlot(s,new Map([['2026-11-07',50]]),now,5),'2026-11-08T13:00:00.000Z');
+  assert.equal(earlierUnattemptedSlot(s,new Map([['2026-11-07',50]]),now,5),'2026-11-07T13:00:00.000Z');
   assert.equal(earlierUnattemptedSlot({...s,language:'ko'},new Map(),now,5),'2026-11-08T01:00:00.000Z');
   for(const locked of [{...s,attemptAt:now.toISOString()},{...s,phase:'submitting'},{...s,phase:'manual_review'}])assert.equal(earlierUnattemptedSlot(locked,new Map(),now,5),null);
   assert.equal(earlierUnattemptedSlot(s,new Map(),now,0),null);
@@ -62,10 +62,10 @@ test('higher daily volume advances only never-attempted plans into free language
 test('campaign ceiling preserves shared daily/monthly quota and handles unlimited plans',()=>{
   const usage={emails:{daily:{used:65,limit:100},monthly:{used:1089,limit:3000}}};
   assert.equal(submissionAllowance(usage,40),5);
-  assert.equal(submissionAllowance({emails:{daily:{used:0,limit:null},monthly:{used:0,limit:50000}}},0),50);
+  assert.equal(submissionAllowance({emails:{daily:{used:0,limit:null},monthly:{used:0,limit:50000}}},0),49900);
   assert.equal(submissionAllowance({emails:{daily:{used:71,limit:100},monthly:{used:0,limit:3000}}},0),0);
   assert.equal(submissionAllowance({emails:{daily:{used:0,limit:100},monthly:{used:2900,limit:3000}}},0),0);
-  assert.equal(submissionAllowance({},0),0);assert.equal(submissionAllowance(usage,50),0);
+  assert.equal(submissionAllowance({},0),0);assert.equal(submissionAllowance(usage,5000),5);
 });
 test('pending schedule separates provider reservations from Notion-only plans and excludes terminal rows',()=>{
   const rows=Array.from({length:4},(_,i)=>row(i+1,'US',{campaign:CAMPAIGN,language:'en',at:'2026-11-07T13:00:00.000Z'}));

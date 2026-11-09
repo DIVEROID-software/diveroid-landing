@@ -1,10 +1,11 @@
-CURRENT POLICY — owner instruction 2026-11-09
+CURRENT POLICY — owner removed campaign cap, 2026-11-09
 
 The active runner is scripts/newsletter-daily.mjs. newsletter.yml checks the
 same Season 2 Notion database once a day at 01:00 UTC / 10:00 Asia/Seoul.
 GitHub can delay the scheduled execution. Every run catches all still-unsent,
 currently Reoon safe rows, including delayed verification and older backlog.
-It sends immediately within the existing combined 50/day and shared-account
+The owner removed the former 50/day campaign ceiling. All eligible backlog
+may send immediately, subject to shared-account provider limits and
 30-daily/100-monthly-slot reserves. No new paid plan or verification is bought.
 Unknown quota fails closed. The former 15-minute planning/scheduling runner
 and its November planning-end helpers below are historical, not active.

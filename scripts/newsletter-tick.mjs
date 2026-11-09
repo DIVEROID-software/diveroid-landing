@@ -6,7 +6,7 @@ const apply=process.argv.includes('--apply');
 const now=new Date();
 if(process.argv.includes('--usage-only')){
   const usage=await resend('usage');
-  console.log(JSON.stringify({mode:'usage',dailyLimit:DAILY_LIMIT,emails:usage.emails}));
+  console.log(JSON.stringify({mode:'usage',dailyLimit:Number.isFinite(DAILY_LIMIT)?DAILY_LIMIT:null,dailyLimitPolicy:"unlimited",emails:usage.emails}));
   process.exit(0);
 }
 const rows=await queryPages(undefined,100000);
@@ -30,7 +30,7 @@ let submissionsToday=stateRows.filter(r=>(readState(r).submittedAt||(textOf(r,P.
 const usage=await resend('usage');
 // Preserve headroom for the existing verification and reservation mail flows.
 let allowance=submissionAllowance(usage,submissionsToday);
-counts.quota={dailyLimit:DAILY_LIMIT,emails:usage.emails,submissionsToday,allowance};
+counts.quota={dailyLimit:Number.isFinite(DAILY_LIMIT)?DAILY_LIMIT:null,dailyLimitPolicy:"unlimited",emails:usage.emails,submissionsToday,allowance};
 
 for(const initial of stateRows){
   let row=await notion(`pages/${initial.id}`);let state=readState(row);
