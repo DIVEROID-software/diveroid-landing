@@ -9,6 +9,6 @@ const pacedResend=async(...args)=>{
   nextProviderAt=Date.now()+650;return resend(...args);
 };
 try{
-  const result=await runDaily({queryPages:()=>queryPages(undefined,100000),getRow:id=>notion('pages/'+id),updatePage,resend:pacedResend,suppressedEmails,recordEvent,sleep:()=>new Promise(r=>setTimeout(r,400))},{apply});
+  const result=await runDaily({queryPages:()=>queryPages(undefined,100000),getRow:id=>notion('pages/'+id),updatePage,resend:pacedResend,suppressedEmails,recordEvent,sleep:()=>new Promise(r=>setTimeout(r,400))},{apply,authorizeOneOff:process.argv.includes('--one-off')});
   console.log(JSON.stringify(result));if(result.failures)process.exitCode=1;
 }catch(error){console.log(JSON.stringify({mode:apply?'daily-apply':'daily-dry-run',fatal:true,code:error.code||error.status||'operation_failed'}));process.exitCode=1;}

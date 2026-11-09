@@ -79,3 +79,33 @@ test('blocked old reservations are canceled while the opt-out state and cancel m
 test('preview is read-only and never cancels or sends',async()=>{
  const r=row(),old=scheduled(r),h=harness([r],{mails:[old]});const x=await runDaily(h.io,{now});assert.equal(x.legacyReservations,1);assert.equal(h.calls.length,0);assert.equal(h.posts.length,0);
 });
+test('one-off skips verification and Hold only for the existing snapshot, without modifying either saved field',async()=>{
+ const statuses=['error','invalid','disposable','unknown','catch_all','role_account','inbox_full','safe'];
+ const rows=statuses.map((s,i)=>{const r=row(i+1);r.created_time='2026-11-08T00:00:00Z';r.properties['Reoon Status'].select.name=s;if(s==='safe')r.properties.Status.select.name='Hold';return r});
+ const future=row(99);future.created_time='2026-11-09T07:00:00Z';future.properties['Reoon Status'].select.name='error';rows.push(future);
+ const h=harness(rows);const result=await runDaily(h.io,{apply:true,now,authorizeOneOff:true});
+ assert.equal(result.newAccepted,8);assert.equal(h.rows[7].properties.Status.select.name,'Hold');
+ assert.deepEqual(h.rows.slice(0,8).map(r=>r.properties['Reoon Status'].select.name),statuses);
+ await runDaily(h.io,{apply:true,now});assert.equal(h.posts.length,8);
+});
+test('one-off keeps unsubscribe, provider suppression, internal/test, duplicate and uncertain-submit exclusions',async()=>{
+ const rows=Array.from({length:8},(_,i)=>{const r=row(i+1);r.created_time='2026-11-08T00:00:00Z';r.properties['Reoon Status'].select.name='error';return r});
+ rows[0].properties.Status.select.name='Unsubscribed';rows[1].properties.Email=rows[0].properties.Email;
+ rows[2].properties.Email.title[0].text.content='test+123@gmail.com';rows[3].properties.Email.title[0].text.content='jay@diveroid.com';
+ rows[4].properties[P.data]=richText(JSON.stringify({campaign:CAMPAIGN,attemptAt:now.toISOString()}));
+ rows[5].properties[P.sent]={date:{start:now.toISOString()}};rows[6].properties.Email.title[0].text.content='bad-address';
+ const h=harness(rows,{suppressed:['subscriber8@example.com']});const r=await runDaily(h.io,{apply:true,now,authorizeOneOff:true});assert.equal(r.newAccepted,0);assert.equal(r.oneOffEnrollment,0);
+});
+test('enrolled one-off recipients survive provider quota waiting; new rows still require safe status',async()=>{
+ const r=row();r.created_time='2026-11-08T00:00:00Z';r.properties['Reoon Status'].select.name='error';const h=harness([r]);
+ const provider=h.io.resend;h.io.resend=async(path,...args)=>path==='usage'?{emails:{daily:{used:100,limit:100},monthly:{used:1000,limit:3000}}}:provider(path,...args);
+ const first=await runDaily(h.io,{apply:true,now,authorizeOneOff:true});assert.equal(first.newAccepted,0);assert.equal(first.remainingEligible,1);
+ const future=row(99);future.properties['Reoon Status'].select.name='error';h.rows.push(future);h.io.resend=provider;
+ const later=await runDaily(h.io,{apply:true,now:new Date(now.getTime()+86400000)});assert.equal(later.newAccepted,1);assert.equal(h.posts.length,1);
+});
+test('one-off grant is bound to the email identity and cannot be transferred by editing an address',async()=>{
+ const r=row();r.created_time='2026-11-08T00:00:00Z';r.properties['Reoon Status'].select.name='error';const h=harness([r]);
+ const provider=h.io.resend;h.io.resend=async(path,...args)=>path==='usage'?{emails:{daily:{used:100,limit:100},monthly:{used:1000,limit:3000}}}:provider(path,...args);
+ await runDaily(h.io,{apply:true,now,authorizeOneOff:true});h.rows[0].properties.Email.title[0].text.content='changed@example.com';h.io.resend=provider;
+ await runDaily(h.io,{apply:true,now});assert.equal(h.posts.length,0);
+});

@@ -7,7 +7,7 @@ on:
       mode:
         description: Apply the existing queue or inspect account usage only
         type: choice
-        options: [apply, preview, usage]
+        options: [apply, preview, usage, one-off-preview, one-off-apply]
         default: apply
 permissions:
   contents: read
@@ -29,6 +29,10 @@ jobs:
             node scripts/newsletter-tick.mjs --usage-only
           elif [ "$NEWSLETTER_MODE" = "preview" ]; then
             node scripts/newsletter-daily.mjs
+          elif [ "$NEWSLETTER_MODE" = "one-off-preview" ]; then
+            node scripts/newsletter-daily.mjs --one-off
+          elif [ "$NEWSLETTER_MODE" = "one-off-apply" ]; then
+            node scripts/newsletter-daily.mjs --one-off --apply
           else
             node scripts/newsletter-daily.mjs --apply
           fi
