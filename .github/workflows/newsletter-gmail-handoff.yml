@@ -1,0 +1,29 @@
+name: Prepare encrypted Gmail remainder handoff
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: read
+concurrency:
+  group: watchdive-newsletter
+  cancel-in-progress: false
+jobs:
+  prepare:
+    if: vars.NEWSLETTER_ENABLED == 'false'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/gmail-handoff.mjs
+        env:
+          NEWSLETTER_ENABLED: ${{ vars.NEWSLETTER_ENABLED }}
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NEWSLETTER_TOKEN_SECRET: ${{ secrets.NEWSLETTER_TOKEN_SECRET }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: encrypted-gmail-remainder
+          path: gmail-handoff/batch.encrypted.json
+          retention-days: 1
+          if-no-files-found: error
