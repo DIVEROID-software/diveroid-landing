@@ -1,3 +1,52 @@
+CURRENT POLICY — owner instruction 2026-11-09
+
+The active runner is scripts/newsletter-daily.mjs. newsletter.yml checks the
+same Season 2 Notion database once a day at 01:00 UTC / 10:00 Asia/Seoul.
+GitHub can delay the scheduled execution. Every run catches all still-unsent,
+currently Reoon safe rows, including delayed verification and older backlog.
+It sends immediately within the existing combined 50/day and shared-account
+30-daily/100-monthly-slot reserves. No new paid plan or verification is bought.
+Unknown quota fails closed. The former 15-minute planning/scheduling runner
+and its November planning-end helpers below are historical, not active.
+
+Sender and Reply-To are help@diveroid.com. The reviewed WatchDive layout is
+retained with evergreen Kickstarter copy. Image and button links use the exact
+owner-supplied Prelaunch URL, including its original hash UTM parameters.
+
+Korean routing: Country=KR, explicitly Korean Browser Language, or a
+Korean-language email service domain (naver.com, daum.net, hanmail.net,
+nate.com, kakao.com). Everything else defaults to English. Legacy Language=KO
+alone is insufficient because the old site defaulted to KO. Persist the
+language and evidence in WatchDive 발송 데이터; do not claim nationality.
+
+Hold/Unsubscribed, provider suppression, internal/test and non-safe addresses
+are excluded. A duplicate's unsubscribe/hold blocks the complete normalized
+email identity. A sent/delivered timestamp or provider message ID also blocks
+re-admission. This does not enroll the separate 59,112-row historical master.
+
+Legacy provider reservations are GET-checked, cancellation-claimed in Notion,
+canceled, then GET-confirmed before replacement. Preserve old ID/time and
+cancellation evidence in the row's state. If the old email raced to sent,
+record its outcome and do not send a replacement. Never clear an unrelated
+cancel marker or ambiguous attempt to force a send. Blocked recipients retain
+their cancel marker. Unknown provider/receipt writes keep the send claim for
+manual reconciliation rather than automatic replay.
+
+Keep the existing campaign ID, unsubscribe signer and webhook verification.
+New provider keys use the prelaunch-v2 suffix only after the old reservation
+is confirmed canceled or before a never-attempted send. No duplicate flow runs
+outside the single serialized GitHub workflow. Apply uses the checked-out
+commit. Notion IDs, receipt fields, delivered/open timestamps remain distinct;
+provider acceptance is not inbox delivery. Readback reconciliation timestamps
+are observation times, not invented historical event times.
+
+workflow_dispatch modes: preview (read-only), usage (read-only), apply (real).
+A quota-held record stays eligible for the next daily check. The owner asked
+for the current eligible backlog immediately; no extra campaign is created.
+
+HISTORICAL POLICY AND ORIGINAL RECEIPT CONTRACT (preserved below)
+--------------------------------------------------------------
+
 WatchDive introduction campaign — enabled by user request on 2026-11-03
 
 Audience: Season 2 Notion database ec0b5179-81ca-8247-8258-018de4f6f76d.
