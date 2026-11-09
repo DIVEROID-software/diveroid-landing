@@ -113,3 +113,7 @@ test('safe signups after the cutoff remain normal recipients and receive no exce
  const r=row();r.created_time='2026-11-09T07:00:00Z';const h=harness([r]);
  const result=await runDaily(h.io,{apply:true,now,authorizeOneOff:true});assert.equal(result.oneOffEnrollment,0);assert.equal(result.newAccepted,1);assert.equal(readState(h.rows[0]).oneOffAuthorization,undefined);
 });
+test('Gmail receipts never enter Resend reconciliation or submit again',async()=>{
+ const r=row();r.properties[P.id]=richText('gmail:abcdef1234567890');r.properties[P.sent]={date:{start:now.toISOString()}};r.properties[P.data]=richText(JSON.stringify({campaign:CAMPAIGN,transport:'gmail',phase:'gmail_accepted',gmailMessageId:'abcdef1234567890'}));
+ const h=harness([r]);const result=await runDaily(h.io,{apply:true,now});assert.equal(result.newAccepted,0);assert.equal(result.failures,0);assert.ok(!h.calls.some(x=>x.path.startsWith('emails')));
+});
