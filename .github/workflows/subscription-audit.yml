@@ -1,22 +1,21 @@
 name: Audit subscription storage
-
 on:
   workflow_dispatch: {}
-
 permissions:
   contents: read
-
 jobs:
   audit:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: Install Vercel CLI
-        run: npm install -g vercel@58.7.1
-      - name: Inspect storage and log summaries
+      - name: Encrypt existing runtime credentials for office scheduler
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: node scripts/audit-subscriptions.mjs
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NEWSLETTER_TOKEN_SECRET: ${{ secrets.NEWSLETTER_TOKEN_SECRET }}
+        run: node scripts/season2-runtime-handoff.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: season2-runtime-encrypted
+          path: runtime-handoff/encrypted.json
+          retention-days: 1

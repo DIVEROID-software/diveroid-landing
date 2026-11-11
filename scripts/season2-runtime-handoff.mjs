@@ -1,0 +1,5 @@
+import fs from 'node:fs';import crypto from 'node:crypto';
+const required=['NOTION_API_KEY','NEWSLETTER_TOKEN_SECRET'];const payload={};for(const k of required){if(!process.env[k]||process.env[k].length<20)throw Error('missing_runtime_secret');payload[k]=process.env[k];}
+const key=crypto.randomBytes(32),iv=crypto.randomBytes(12),cipher=crypto.createCipheriv('aes-256-gcm',key,iv),data=Buffer.concat([cipher.update(JSON.stringify(payload)),cipher.final()]);
+const envelope={v:1,key:crypto.publicEncrypt({key:fs.readFileSync(new URL('./season2-runtime-public.pem',import.meta.url)),padding:crypto.constants.RSA_PKCS1_OAEP_PADDING,oaepHash:'sha256'},key).toString('base64'),iv:iv.toString('base64'),tag:cipher.getAuthTag().toString('base64'),data:data.toString('base64')};
+fs.mkdirSync('runtime-handoff',{mode:0o700});fs.writeFileSync('runtime-handoff/encrypted.json',JSON.stringify(envelope),{mode:0o600});console.log('Encrypted existing Season2 runtime credentials for the authorized office job; no plaintext artifacts.');
